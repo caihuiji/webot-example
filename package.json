@@ -1,6 +1,6 @@
 {
-  "name": "weixin-robot-example",
-  "version": "0.0.3",
+  "name": "meirimeinv",
+  "version": "0.1.0",
   "main": "app.js",
   "dependencies": {
     "express": "~3.0",
@@ -23,17 +23,8 @@
     "start": "node app.js",
     "test": "make test"
   },
-  "keywords": [
-    "weixin",
-    "webot",
-    "wechat"
-  ],
-  "description": "weixin-robot 模块示例",
+  "description": "meirimeijvguanlipingtai",
   "repository": "https://github.com/node-webot/webot-example.git",
-  "author": "Jesse Yang <jyyjcc@gmail.com>",
-  "contributors": [
-    "Jesse Yang <jyyjcc@gmail.com> (http://github.com/ktmud)",
-    "TZ <atian25@qq.com> (http://atian25.iteye.com/)"
-  ],
+  "author": "benjamin <caihuijigood@gmail.com>",
   "license": "MIT"
 }
