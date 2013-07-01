@@ -30,12 +30,24 @@ module.exports = subject = {
 					return true;
 				}
 			}
-			return false;
 		},
 		
 		_subjects : [
-			{name :'麻生希' ,url	: 'http://www.imama360.com/girls/mashengxi.html'},
-			{name :'松岛枫' ,url	: 'http://www.imama360.com/girls/songdaofeng.html'},
-			{name :'苍井空' ,url	: 'http://www.imama360.com/girls/cangjingkong.html'}
+	        {name :'大浦安娜' ,	url	: 'http://www.imama360.com/subject/1.jpg'},
+	        {name :'原纱央莉' ,	url	: 'http://www.imama360.com/subject/2.jpg'},
+	        {name :'泽井芽衣' ,	url	: 'http://www.imama360.com/subject/3.jpg'},
+	        {name :'泷泽萝拉' ,	url	: 'http://www.imama360.com/subject/4.jpg'},
+			{name :'樱井莉亚' ,	url	: 'http://www.imama360.com/subject/5.jpg'},
+			{name :'雾岛奈津美' ,url	: 'http://www.imama360.com/subject/6.jpg'},
+			{name :'柚木提娜' ,	url	: 'http://www.imama360.com/subject/7.jpg'},
+			{name :'杉原杏璃' ,	url	: 'http://www.imama360.com/subject/8.png'},
+			{name :'京香julia' ,url	: 'http://www.imama360.com/subject/9.jpg'},
+			{name :'卯月麻衣' ,	url	: 'http://www.imama360.com/subject/10.jpg'},
+			{name :'小泽玛利亚' ,url	: 'http://www.imama360.com/subject/11.jpg'},
+			{name :'吉泽明步' ,	url	: 'http://www.imama360.com/subject/12.jpg'},
+			{name :'波多野结衣' ,url	: 'http://www.imama360.com/subject/13.jpg'},
+			{name :'松岛枫' ,	url	: 'http://www.imama360.com/subject/14.png'},
+			{name :'苍井空' ,	url	: 'http://www.imama360.com/subject/15.jpg'},
+			{name :'麻生希' ,	url	: 'http://www.imama360.com/subject/16.jpg'}
 		]
 }
