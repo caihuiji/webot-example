@@ -25,7 +25,8 @@ module.exports = exports = function(webot){
 	   handler: function(info){
 	        return 	"嘿嘿~ 健康生活就要开始咯！每天睡觉前，看看美女，梦会很美哦!!\n"+
 	        		"1 回复“强身健体” - 查看互动类答题模式。\n"+
-	        		"2 回复“拉上窗帘” - 查看女优获种子取模式 。";
+	        		"2 回复“拉上窗帘” - 查看大湿模式 。\n"+
+	        		"3 回复“help:意见” - 告诉我们需要改进和不足的地方。（help:美女多一点）";
 	     }
   });
   
@@ -147,13 +148,13 @@ module.exports = exports = function(webot){
 	  
 	  log.info(info.sp +" request text="+info.text );
 	  
-	  if(new Date().getTime() - info.session.dashi.time  >= 300000){
+	  if(new Date().getTime() - info.session.dashi  >= 300000){
 		  log.info(info.sp +" session time out " );
 		  return ;
 	  }
 	  
 	  var exit = false ;
-	  (new Date().getTime() - info.session.dashi.time >= 180000) && (exit =  "你想得太久了，大湿撸管去了！");
+	  (new Date().getTime() - info.session.dashi >= 180000) && (exit =  "你想得太久了，大湿撸管去了！");
 	  info.text === '谢谢大湿' &&  ( exit = "老衲已把我毕生所学的东西传授给你了，希望你发扬广大。");
 	  info.text === '谢谢大师' &&  ( exit = '尼玛，是大湿! 大湿! 大湿! 滚粗。（大湿气愤地走掉）');
 	  
@@ -171,9 +172,10 @@ module.exports = exports = function(webot){
 	  } else if (/[龚玥菲|金瓶梅]/gi.test(info.text)){
 		  message = [
 		             {title:"你尽然知道这个东西，给你" ,description :"<新金瓶梅> - 2013 年上映，高清种子或则征求中。。" ,pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uW18P7ViaD7jmGqAIUzw5a6g7cAficYjbG5r3F9IFok0XFA/0',url:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uW18P7ViaD7jmGqAIUzw5a6g7cAficYjbG5r3F9IFok0XFA/0' },
-		             {title:"第一卷：命惑篇"   ,  pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uVN6Cg7j3wGJb86VckFOzet4nSRzR1j7FFibwvq7g0NEicQ/0',url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000059' },
-		             {title:"第二卷：色劫篇"  ,  pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uVloYPpKl6sXNRWt09tLibibl0SEM3KiaOzrQicYVtbNwvoHg/0',url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000062' },
-		             {title:"第三卷：情乱篇"  , pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uW18P7ViaD7jmGqAIUzw5a6gH2F8HRib4qG1icJIbsYictvdQ/0' , url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000088'}
+		             {title:"第一卷：命惑篇"   ,  pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uVN6Cg7j3wGJb86VckFOzet4nSRzR1j7FFibwvq7g0NEicQ/0',url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000059&itemidx=1&sign=9f59114ce6a28f9e50ae73ae4aaeddbd' },
+		             {title:"第二卷：色劫篇"  ,  pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uVloYPpKl6sXNRWt09tLibibl0SEM3KiaOzrQicYVtbNwvoHg/0',url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000062&itemidx=1&sign=f2e3d238fdadb7f9e5641a62658b6e08' },
+		             {title:"第三卷：情乱篇"  , pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uW18P7ViaD7jmGqAIUzw5a6gH2F8HRib4qG1icJIbsYictvdQ/0' , url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000088&itemidx=1&sign=dd8158b6717754350cc019c5b362bbf5'},
+		             {title:"第三卷：命逝篇(完结篇)"  , pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uWSeR5Ap6iamXTACdEDKCQibR7LmIVNJeQcCGtuhqgUChzw/0' , url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000091&itemidx=1&sign=69a9aa534844161bad0186f8fc0573ab'}
 		             ];
 	  } else if (subject.contain(info.text)) {
 		  message = "嗯... 这是好东西啊，你过一段时间再来找我，应该就有了。";
@@ -210,6 +212,13 @@ module.exports = exports = function(webot){
   });
   
   
-
+  webot.set("help",{
+	  pattern : '/^help.*$/',
+	  handler : function (info){
+		  log.info(info.sp +" comment help = " + info.text);
+		  info.flag = true;
+		  return "感谢你对我们提出的宝贵意见，希望你撸得愉快。";
+	  }
+  });
   
 }
