@@ -1,6 +1,7 @@
 var crypto = require('crypto'),
-	debug = require('debug'),
-	log = debug('caihuiji:log'),
+	fs = require('fs')
+	Log = require('log'),
+	log = new Log("log" , fs.createWriteStream(__dirname + '/log.log')),
 	_ = require('underscore')._,
 	subject = require('../dao/subject'),
 	torrent = require('../dao/torrent');
@@ -10,7 +11,7 @@ var crypto = require('crypto'),
  */
 module.exports = exports = function(webot){
 	
-	
+	console.log(__dirname )
 
 	
 	
@@ -18,7 +19,7 @@ module.exports = exports = function(webot){
 	
   webot.set("subscribe" , {
 	  pattern: function(info) {
-		  log(info.sp +" subscribed at " + new Date()   );
+		  log.info(info.sp +" subscribed ");
 	      return info.is('event') && info.param.event === 'subscribe' ;
 	    },
 	   handler: function(info){
@@ -30,7 +31,7 @@ module.exports = exports = function(webot){
   
   webot.set("unsubscribe" , {
 	  pattern: function(info) {
-		  log(info.sp +" unsubscribed at " + new Date());
+		  log.info(info.sp +" unsubscribed ");
 	      return info.is('event') && info.param.event === 'unsubscribe' ;
 	    }
   });
@@ -42,7 +43,7 @@ module.exports = exports = function(webot){
   webot.set('lashangchuanglian', {
 	  pattern : '/^拉上窗帘$/',
 	  handler : function (info){
-		  log(info.sp +" request text=拉上窗帘  at " + new Date());
+		  log.info(info.sp +" request text=拉上窗帘  ");
 		  return [
 		             {title: '拉上窗帘看片咯', description: '本站收录的种子均为大湿们精心筛选和狼友们的鼎立推荐!点击进入查看收录列表', pic: 'http://www.imama360.com/material/dashi.jpg', url: 'http://www.imama360.com/material/dashi.html'}
 		          ];
@@ -52,7 +53,7 @@ module.exports = exports = function(webot){
   webot.set('qiangshengjianti', {
 	  pattern : '/^强身健体$/',
 	  handler : function (info){
-		  log(info.sp +" request text=强身健体  at " + new Date());
+		  log.info(info.sp +" request text=强身健体  ");
 		  return [
 		          	{ title:'嘿咻 - 是一款互动类答题游戏',description:'本游戏重在促进狼友们认识更多的女优。',pic: 'http://www.imama360.com/material/heixiu.jpg', url: 'http://www.imama360.com/material/heixiu.html'}
 		         ];
@@ -75,6 +76,7 @@ module.exports = exports = function(webot){
 	  	message = '';
 	  
 		  if(new Date().getTime() - heixiu.time  >= 300000){
+			  log.info(info.sp +" session time out then game over"  );
 			  return ;
 		  }
 	  
@@ -83,6 +85,7 @@ module.exports = exports = function(webot){
 	  heixiu.count < 0 && (exit = "你已经精疲力尽，还是择日再战吧。（你被女优们嘲笑了）");
 	  
 	  if(exit){
+		  log.info(info.sp + " exit mode of heixiu and message = " + exit );
 		  delete heixiu;
 		  return exit;
 	  }
@@ -91,13 +94,13 @@ module.exports = exports = function(webot){
 		  if( heixiu.save >0){
 			  heixiu.save--;
 			  var one =  heixiu.lastAnswered = subject.next(answered);
-			  message = one && one.url;
+			  message = one && { title:'你知道我是谁吗?',pic: one.url, url: one.url};
 		  }else {
 			  message = "振动器已经用过了，那个女优还在那里爽。你还有" + ( --heixiu.count  ) + "次撸管的机会";
 		  }
 	  }else if (lastAnswered.name === info.text){
 		  var one =  heixiu.lastAnswered = subject.next(answered);
-		  message = one && one.url;
+		  message = one && { title:'你知道我是谁吗?',pic: one.url, url: one.url};
 	  }else{
 		  message = "你还有" + ( --heixiu.count  ) + "次撸管的机会。还有"+heixiu.save +"振动器可用。";
 	  }
@@ -109,18 +112,21 @@ module.exports = exports = function(webot){
 		  message = "通关啦！恭喜你成为了撸管高手。你将被列入撸管达人排行版。神秘大奖稍后联系你。"
 	  }else{
 		  if(heixiu.count < 0){
+			  log.info(info.sp + " exit mode of heixiu and message = " + "你已经精疲力尽，还是择日再战吧。（你被女优们嘲笑了）");
 			  return"你已经精疲力尽，还是择日再战吧。（你被女优们嘲笑了）";
 		  }
 		  heixiu.time = new Date().getTime();
 		  info.rewait();
 	  }
-	 
+	  
+	  log.info(info.sp +" response message =  " + message  );
 	  return  message;
   })
   
   webot.set("heixiu",{
 	  pattern : '/^嘿咻$/',
 	  handler : function (info){
+		 log.info(info.sp +" enter heixiu game  " );
 		 var heixiu =  info.session.heixiu = {
 				  time :  new Date().getTime() ,
 				  answered : {},
@@ -130,7 +136,7 @@ module.exports = exports = function(webot){
 		  } 
 		  info.wait("heixiu");
 		  var one =  heixiu.lastAnswered = subject.next(heixiu.answered);
-		  return one.url;
+		  return { title:'你知道我是谁吗?',pic: one.url, url: one.url};
 	  }
   });
   
@@ -139,9 +145,10 @@ module.exports = exports = function(webot){
   
   webot.waitRule("dashi",function (info ){
 	  
-	  log(info.sp +" request text="+info.text+" at " + new Date() );
+	  log.info(info.sp +" request text="+info.text );
 	  
 	  if(new Date().getTime() - info.session.dashi.time  >= 300000){
+		  log.info(info.sp +" session time out " );
 		  return ;
 	  }
 	  
@@ -151,7 +158,7 @@ module.exports = exports = function(webot){
 	  info.text === '谢谢大师' &&  ( exit = '尼玛，是大湿! 大湿! 大湿! 滚粗。（大湿气愤地走掉）');
 	  
 	  if(exit){
-		  log(info.sp +" request exit mode of dashi at " + new Date() );
+		  log.info(info.sp +" exit mode of dashi and message = "+ exit );
 		  delete info.session.dashi;
 		  return exit;
 	  }
@@ -160,14 +167,28 @@ module.exports = exports = function(webot){
 	  // 搜索列表
 	  if(data){
 		  message =  data.url;
-		  log(info.sp +" get torrent = " + message );
-	  }else {
+		  log.info(info.sp +" answer in dashi = " + info.text );
+	  } else if (/[龚玥菲|金瓶梅]/gi.test(info.text)){
+		  message = [
+		             {title:"你尽然知道这个东西，给你" ,description :"<新金瓶梅> - 2013 年上映，高清种子或则征求中。。" ,pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uW18P7ViaD7jmGqAIUzw5a6g7cAficYjbG5r3F9IFok0XFA/0',url:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uW18P7ViaD7jmGqAIUzw5a6g7cAficYjbG5r3F9IFok0XFA/0' },
+		             {title:"第一卷：命惑篇"   ,  pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uVN6Cg7j3wGJb86VckFOzet4nSRzR1j7FFibwvq7g0NEicQ/0',url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000059' },
+		             {title:"第二卷：色劫篇"  ,  pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uVloYPpKl6sXNRWt09tLibibl0SEM3KiaOzrQicYVtbNwvoHg/0',url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000062' },
+		             {title:"第三卷：情乱篇"  , pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uW18P7ViaD7jmGqAIUzw5a6gH2F8HRib4qG1icJIbsYictvdQ/0' , url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000088'}
+		             ];
+	  } else if (subject.contain(info.text)) {
+		  message = "嗯... 这是好东西啊，你过一段时间再来找我，应该就有了。";
+	  } else {
+		  log.info(info.sp +" can not answer in dashi = " + info.text );
 		  info.flag = true;
-		  message =  "你所问的东西，老衲也不知，不过老衲学习一下下次再告诉你，你还有什么问的吗？";
+		  var girl = subject.next([]);
+		  message =   { title:'给你介绍个女优',description : "这个的叫"+ girl.name,pic: girl.url, url: girl.url};
+		 // message =  "你所问的东西，老衲也不知，不过老衲学习一下下次再告诉你，你还有什么问的吗？";
 	  }
 	  
 	  info.session.dashi = new Date().getTime();
 	  info.rewait();
+	  
+	  log.info(info.sp +" response message = "+ message );
 	  
 	  
 	  return message; 
@@ -176,7 +197,7 @@ module.exports = exports = function(webot){
   webot.set("dashi",{
 	  pattern : '/^大湿$/',
 	  handler : function (info){
-		  log(info.sp +" request text=大湿 at " + new Date() + " and enter the mode of dashi");
+		  log.info(info.sp +" request text=大湿  and enter the mode of dashi");
 		  info.session.dashi =   new Date().getTime() ;
 		  info.wait("dashi");
 		  return "说出你想要的吧，老衲尽可能满足你的欲望。";

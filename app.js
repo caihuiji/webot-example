@@ -2,7 +2,6 @@ var express = require('express'),
 
 	webot = require('weixin-robot');
 
-	log = require('debug')('caihuiji:log'),
 	
 	app = express(),
 	
@@ -26,7 +25,7 @@ require('./rules')(webot);
 app.enable('trust proxy');
 
 app.listen(env.port , function (){
-	log("Listening on %s " , env.port);
+	console.log("Listening on %s " , env.port);
 });
 
 
