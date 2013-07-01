@@ -23,7 +23,7 @@ module.exports = exports = function(webot){
 	    },
 	   handler: function(info){
 	        return 	"嘿嘿~ 健康生活就要开始咯！每天睡觉前，看看美女，梦会很美哦!!\n"+
-	        		"1 回复“强生健体” - 查看互动类答题模式。\n"+
+	        		"1 回复“强身健体” - 查看互动类答题模式。\n"+
 	        		"2 回复“拉上窗帘” - 查看女优获种子取模式 。";
 	     }
   });
@@ -44,7 +44,7 @@ module.exports = exports = function(webot){
 	  handler : function (info){
 		  log(info.sp +" request text=拉上窗帘  at " + new Date());
 		  return [
-		             {title: '拉上窗帘看片咯', description: '本站收录的种子均为大湿们精心筛选和狼友们的鼎立推荐!点击进入查看收录列表', pic: 'https://raw.github.com/node-webot/webot-example/master/qrcode.jpg', url: 'https://github.com/node-webot/webot-example'}
+		             {title: '拉上窗帘看片咯', description: '本站收录的种子均为大湿们精心筛选和狼友们的鼎立推荐!点击进入查看收录列表', pic: 'http://www.imama360.com/material/dashi.jpg', url: 'http://www.imama360.com/material/dashi.html'}
 		          ];
 	  }
   });
@@ -52,9 +52,9 @@ module.exports = exports = function(webot){
   webot.set('qiangshengjianti', {
 	  pattern : '/^强身健体$/',
 	  handler : function (info){
-		  log(info.sp +" request text=强生健体  at " + new Date());
+		  log(info.sp +" request text=强身健体  at " + new Date());
 		  return [
-		          	{ title:'嘿咻 - 是一款互动类答题游戏',descriton:'本游戏重在促进狼友们认识更多的女优。',pic: 'http://i.imgur.com/ijE19.jpg', url: 'https://github.com/node-webot/weixin-robot'}
+		          	{ title:'嘿咻 - 是一款互动类答题游戏',description:'本游戏重在促进狼友们认识更多的女优。',pic: 'http://www.imama360.com/material/heixiu.jpg', url: 'http://www.imama360.com/material/heixiu.html'}
 		         ];
 	  }
   });
@@ -73,7 +73,12 @@ module.exports = exports = function(webot){
 	  	answered = heixiu.answered,
 	  	lastAnswered = heixiu.lastAnswered,
 	  	message = '';
-	  (heixiu.time - new Date().getTime() >= 180*1000) &&   (exit =  "这么久还没有勃起，还是择日再战吧。（你被女优们嘲笑了）");
+	  
+		  if(new Date().getTime() - heixiu.time  >= 300000){
+			  return ;
+		  }
+	  
+	  (new Date().getTime() - heixiu.time  >= 180000) &&   (exit =  "这么久还没有勃起，还是择日再战吧。（你被女优们嘲笑了）");
 	  info.text === '啊' &&   (exit = "你已经射，不能再继续挑战了。（你被女优们嘲笑了）");
 	  heixiu.count < 0 && (exit = "你已经精疲力尽，还是择日再战吧。（你被女优们嘲笑了）");
 	  
@@ -94,13 +99,14 @@ module.exports = exports = function(webot){
 		  var one =  heixiu.lastAnswered = subject.next(answered);
 		  message = one && one.url;
 	  }else{
-		  message = "你还有" + ( --heixiu.count  ) + "次撸管的机会。还有"+heixiu.save +"振动器在手。";
+		  message = "你还有" + ( --heixiu.count  ) + "次撸管的机会。还有"+heixiu.save +"振动器可用。";
 	  }
 	  
 	  
 	  // 通关
 	  if(message === false){
-		  message = "恭喜你成为了撸管高手。你将被列入撸管达人排行版。"
+		  info.flag = true;
+		  message = "通关啦！恭喜你成为了撸管高手。你将被列入撸管达人排行版。神秘大奖稍后联系你。"
 	  }else{
 		  if(heixiu.count < 0){
 			  return"你已经精疲力尽，还是择日再战吧。（你被女优们嘲笑了）";
@@ -135,8 +141,12 @@ module.exports = exports = function(webot){
 	  
 	  log(info.sp +" request text="+info.text+" at " + new Date() );
 	  
+	  if(new Date().getTime() - info.session.dashi.time  >= 300000){
+		  return ;
+	  }
+	  
 	  var exit = false ;
-	  (info.session.dashi.time - new Date().getTime() >= 180*1000) && (exit =  "你想得太久了，大湿撸管去了！");
+	  (new Date().getTime() - info.session.dashi.time >= 180000) && (exit =  "你想得太久了，大湿撸管去了！");
 	  info.text === '谢谢大湿' &&  ( exit = "老衲已把我毕生所学的东西传授给你了，希望你发扬广大。");
 	  info.text === '谢谢大师' &&  ( exit = '尼玛，是大湿! 大湿! 大湿! 滚粗。（大湿气愤地走掉）');
 	  
@@ -152,6 +162,7 @@ module.exports = exports = function(webot){
 		  message =  data.url;
 		  log(info.sp +" get torrent = " + message );
 	  }else {
+		  info.flag = true;
 		  message =  "你所问的东西，老衲也不知，不过老衲学习一下下次再告诉你，你还有什么问的吗？";
 	  }
 	  
