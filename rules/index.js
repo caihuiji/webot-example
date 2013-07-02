@@ -169,7 +169,7 @@ module.exports = exports = function(webot){
 	  var data = torrent.findByName(info.text) ;
 	  // 搜索列表
 	  if(data){
-		  message =  data.url + "(友情提示：使用电脑输入链接下载。)";
+		  message =  data.url + "\n(友情提示：使用电脑输入链接下载。)";
 		  log.info(info.sp +" answer in dashi = " + info.text );
 	  } else if (/[龚玥菲|金瓶梅]/gi.test(info.text)){
 		  message = [
