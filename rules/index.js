@@ -46,7 +46,7 @@ module.exports = exports = function(webot){
 	  handler : function (info){
 		  log.info(info.sp +" request text=拉上窗帘  ");
 		  return [
-		             {title: '拉上窗帘看片咯', description: '本站收录的种子均为大湿们精心筛选和狼友们的鼎立推荐!点击进入查看收录列表', pic: 'http://www.imama360.com/material/dashi.jpg', url: 'http://www.imama360.com/material/dashi.html'}
+		             {title: '大湿来告诉你', description: '大湿回复的内容为总网友期望指数最高的内容，详情查看更新列表，持续更新中...', pic: 'http://www.imama360.com/material/dashi.jpg', url: 'http://www.imama360.com/material/dashi.html'}
 		          ];
 	  }
   });
