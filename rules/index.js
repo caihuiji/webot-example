@@ -19,10 +19,10 @@ module.exports = exports = function(webot){
 	
   webot.set("subscribe" , {
 	  pattern: function(info) {
-		  log.info(info.sp +" subscribed ");
 	      return info.is('event') && info.param.event === 'subscribe' ;
 	    },
 	   handler: function(info){
+		   log.info(info.sp +" subscribed ");
 	        return 	"嘿嘿~ 健康生活就要开始咯！每天睡觉前，看看美女，梦会很美哦!!\n"+
 	        		"1 回复“强身健体” - 查看互动类答题模式。\n"+
 	        		"2 回复“拉上窗帘” - 查看大湿模式 。\n"+
@@ -42,7 +42,7 @@ module.exports = exports = function(webot){
   
   
   webot.set('lashangchuanglian', {
-	  pattern : '/^拉上窗帘$/',
+	  pattern : '/^[1|拉上窗帘]$/',
 	  handler : function (info){
 		  log.info(info.sp +" request text=拉上窗帘  ");
 		  return [
@@ -52,7 +52,7 @@ module.exports = exports = function(webot){
   });
   
   webot.set('qiangshengjianti', {
-	  pattern : '/^强身健体$/',
+	  pattern : '/^[2|强身健体]$/',
 	  handler : function (info){
 		  log.info(info.sp +" request text=强身健体  ");
 		  return [
@@ -69,6 +69,8 @@ module.exports = exports = function(webot){
 /************      答题       *************/
   
   webot.waitRule("heixiu",function (info ){
+	  
+	  log.info(info.sp +" request text="+info.text );
 	  
 	  var exit = false ,
 	  	heixiu =  info.session.heixiu,
@@ -167,7 +169,7 @@ module.exports = exports = function(webot){
 	  var data = torrent.findByName(info.text) ;
 	  // 搜索列表
 	  if(data){
-		  message =  data.url;
+		  message =  data.url + "(友情提示：使用电脑输入链接下载。)";
 		  log.info(info.sp +" answer in dashi = " + info.text );
 	  } else if (/[龚玥菲|金瓶梅]/gi.test(info.text)){
 		  message = [
@@ -179,7 +181,7 @@ module.exports = exports = function(webot){
 		             ];
 	  } else if (subject.contain(info.text)) {
 		  message = "嗯... 这是好东西啊，你过一段时间再来找我，应该就有了。";
-	  } else {
+	  }  else {
 		  log.info(info.sp +" can not answer in dashi = " + info.text );
 		  info.flag = true;
 		  var girl = subject.next([]);
