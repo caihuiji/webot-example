@@ -42,7 +42,7 @@ module.exports = exports = function(webot){
   
   
   webot.set('lashangchuanglian', {
-	  pattern : '/^[1|拉上窗帘]$/',
+	  pattern : '/^(1)|(拉上窗帘)$/',
 	  handler : function (info){
 		  log.info(info.sp +" request text=拉上窗帘  ");
 		  return [
@@ -52,7 +52,7 @@ module.exports = exports = function(webot){
   });
   
   webot.set('qiangshengjianti', {
-	  pattern : '/^[2|强身健体]$/',
+	  pattern : '/^(2)|(强身健体)$/',
 	  handler : function (info){
 		  log.info(info.sp +" request text=强身健体  ");
 		  return [
@@ -171,13 +171,14 @@ module.exports = exports = function(webot){
 	  if(data){
 		  message =  data.url + "\n(友情提示：使用电脑输入链接下载。)";
 		  log.info(info.sp +" answer in dashi = " + info.text );
-	  } else if (/[龚玥菲|金瓶梅]/gi.test(info.text)){
+	  } else if (/(龚玥菲)|(金瓶梅)/gi.test(info.text)){
 		  message = [
 		             {title:"你尽然知道这个东西，给你" ,description :"<新金瓶梅> - 2013 年上映，高清种子或则征求中。。" ,pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uW18P7ViaD7jmGqAIUzw5a6g7cAficYjbG5r3F9IFok0XFA/0',url:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uW18P7ViaD7jmGqAIUzw5a6g7cAficYjbG5r3F9IFok0XFA/0' },
 		             {title:"第一卷：命惑篇"   ,  pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uVN6Cg7j3wGJb86VckFOzet4nSRzR1j7FFibwvq7g0NEicQ/0',url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000059&itemidx=1&sign=9f59114ce6a28f9e50ae73ae4aaeddbd' },
 		             {title:"第二卷：色劫篇"  ,  pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uVloYPpKl6sXNRWt09tLibibl0SEM3KiaOzrQicYVtbNwvoHg/0',url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000062&itemidx=1&sign=f2e3d238fdadb7f9e5641a62658b6e08' },
 		             {title:"第三卷：情乱篇"  , pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uW18P7ViaD7jmGqAIUzw5a6gH2F8HRib4qG1icJIbsYictvdQ/0' , url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000088&itemidx=1&sign=dd8158b6717754350cc019c5b362bbf5'},
-		             {title:"第三卷：命逝篇(完结篇)"  , pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uWSeR5Ap6iamXTACdEDKCQibR7LmIVNJeQcCGtuhqgUChzw/0' , url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000091&itemidx=1&sign=69a9aa534844161bad0186f8fc0573ab'}
+		             {title:"第四卷：命逝篇(完结篇)"  , pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uWSeR5Ap6iamXTACdEDKCQibR7LmIVNJeQcCGtuhqgUChzw/0' , url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000091&itemidx=1&sign=69a9aa534844161bad0186f8fc0573ab'},
+		             {title:"龚玥菲-经典写真"  , pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uWSeR5Ap6iamXTACdEDKCQibR7LmIVNJeQcCGtuhqgUChzw/0' , url:'http://www.imama360.com/girls/gongyuefei.html'}
 		             ];
 	  } else if (subject.contain(info.text)) {
 		  message = "嗯... 这是好东西啊，你过一段时间再来找我，应该就有了。";
@@ -185,7 +186,7 @@ module.exports = exports = function(webot){
 		  log.info(info.sp +" can not answer in dashi = " + info.text );
 		  info.flag = true;
 		  var girl = subject.next([]);
-		  message =   { title:'给你介绍个女优',description : "这个的叫"+ girl.name,pic: girl.url, url: girl.url};
+		  message =   { title:'老衲愚昧',description : "介绍个女优给你认识吧，这个的叫"+ girl.name,pic: girl.url, url: girl.url};
 		 // message =  "你所问的东西，老衲也不知，不过老衲学习一下下次再告诉你，你还有什么问的吗？";
 	  }
 	  
