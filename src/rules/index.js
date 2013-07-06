@@ -11,8 +11,6 @@ var crypto = require('crypto'),
  */
 module.exports = exports = function(webot){
 	
-	console.log(__dirname )
-
 	
 	
 /**************** subscribe or unsubscribe  **********************/
@@ -97,13 +95,13 @@ module.exports = exports = function(webot){
 		  if( heixiu.save >0){
 			  heixiu.save--;
 			  var one =  heixiu.lastAnswered = subject.next(answered);
-			  message = one && { title:'你知道我是谁吗?',pic: one.url, url: one.url};
+			  message = one && { title:'你知道我是谁吗?',pic: one.url, url: "/material/viewSubject.html?imageurl="+one.url};
 		  }else {
 			  message = "振动器已经用过了，那个女优还在那里爽。你还有" + ( --heixiu.count  ) + "次撸管的机会";
 		  }
 	  }else if (lastAnswered.name === info.text){
 		  var one =  heixiu.lastAnswered = subject.next(answered);
-		  message = one && { title:'你知道我是谁吗?',pic: one.url, url: one.url};
+		  message = one && { title:'你知道我是谁吗?',pic: one.url, url: "/material/viewSubject.html?imageurl="+one.url};
 	  }else{
 		  message = "你还有" + ( --heixiu.count  ) + "次撸管的机会。还有"+heixiu.save +"振动器可用。";
 	  }
@@ -139,7 +137,7 @@ module.exports = exports = function(webot){
 		  } 
 		  info.wait("heixiu");
 		  var one =  heixiu.lastAnswered = subject.next(heixiu.answered);
-		  return { title:'你知道我是谁吗?',pic: one.url, url: one.url};
+		  return { title:'你知道我是谁吗?',pic: one.url, url:  "/material/viewSubject.html?imageurl="+one.url};
 	  }
   });
   
