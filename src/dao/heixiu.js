@@ -1,5 +1,6 @@
 module.exports = heixiu = function (userId){
 	this._userId = userId;
+	
 };
 
 heixiu.prototype = {
@@ -12,47 +13,58 @@ heixiu.prototype = {
 		
 		_help : 1,
 		
-		_getTimes  : function (){
-			return this.__maxTimes;
+		_currentIndex : 0,
+		
+		_failSubject : [];
+		
+		_exchange : function (array){
+			var temp , index  ;
+			for(var i = 0 ;i < array.length ; i++){
+				index = Math.random() * (array.length);
+				temp = array[i];
+				array[i] = array[index];
+				array[index] = temp;
+			}
 		},
 		
-		_getAnswered : function (){
-			return _answered;
-		},
 		
-		_subtractTimes :  function (){
-			--this._maxTimes;
+		getFailSubject : function (){
+			return this._failSubject;
 		},
 		
 		startGame : function (callback){
-			//nextSubject();
+			var index  = parseInt( Math.random() * (this._subjects.length) ),
+
+			for(var i = 0 ;i<this._subjects.length ; i++){
+				this._answeredIndex [i] = i;
+			}
+			
+			this._exchange(this._answeredIndex);
+			
+			nextSubject(null , callback);
 		},
 		
 		/**
+		 * null 通关
 		 * true 成功 
 		 * false 失败
 		 */
-		nextSubject : function ( callback){
-				var index  = parseInt( Math.random() * (this._subjects.length) ); 
-					
-					var key , i = index  ;
-					do{
-						key = "index_" + i ;
-						if( answered[key] == null){
-							answered[key] = true;
-							return callback(true , this._subjects[i] );
-						}
-						
-						i ++ ;
-						if(i >= this._subjects.length){
-							i = 0;
-						}
-						
-						if(i === index){
-							callback(false)
-						}
-						
-					}while(true)
+		nextSubject : function ( text ,  callback){
+				if(this._maxTimes <= 0  ){
+					callback(false , this.getModel());
+				}
+				
+				if(text == null && this._subjects[this._currentIndex].name !== text){
+					this. _failSubject[].push({index : this._currentIndex , name :  this._subjects[this._currentIndex].name});
+					callback(false , this.getModel());
+				}
+				
+				if( ++_currentIndex >  this._subjects.length ){
+					callback(null , this.getModel());
+				}
+				
+				_currentIndex ++ ;
+				callback(true , this.getModel());
 		},
 		
 		help : function (callback){
@@ -60,12 +72,17 @@ heixiu.prototype = {
 				callback(false);
 			}
 			--this._help;
+			this. _failSubject[].push({index : this._currentIndex , name :  this._subjects[this._currentIndex].name});
 			nextSubject(callback);
 		},
 		
 		totalScore: function ( callback){
 			
 		},
+		
+		getModel : function (){
+			return {times : this._maxTimes , help :  this._help , subject :   this._subjects[this._currentIndex] , index : this._currentIndex+1 };
+		}
 		_subjects : [
 		 	        {name :'大浦安娜' ,	url	: 'http://www.imama360.com/subject/1.jpg'},
 		 	        {name :'原纱央莉' ,	url	: 'http://www.imama360.com/subject/2.jpg'},

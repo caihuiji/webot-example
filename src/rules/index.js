@@ -66,78 +66,91 @@ module.exports = exports = function(webot){
   
 /************      答题       *************/
   
+  
+  var urlPrefix = "/material/viewSubject.html";
+  
+  function  generatePic (index, subject){
+	  return  { 
+		  		title: index +'号：帅锅，觉得我咋样啊，知道我的名字吗？',
+		  		description : '如果不认识我，可以回复 “振动器” 进入一道题哦。',
+		  		pic: subject.url,
+		  		url:   urlPrefix+"?imageurl="+subject.url
+		  		};
+  };
+  
   webot.waitRule("heixiu",function (info ){
 	  
 	  log.info(info.sp +" request text="+info.text );
 	  
 	  var exit = false ,
 	  	heixiu =  info.session.heixiu,
-	  	answered = heixiu.answered,
-	  	lastAnswered = heixiu.lastAnswered,
-	  	message = '';
+	  	heixiuService = info.session.heixiuService,
+	  	currentDate = new Date().getTime();
+	  	
 	  
-		  if(new Date().getTime() - heixiu.time  >= 300000){
-			  log.info(info.sp +" session time out then game over"  );
-			  return ;
-		  }
-	  
-	  (new Date().getTime() - heixiu.time  >= 180000) &&   (exit =  "这么久还没有勃起，还是择日再战吧。（你被女优们嘲笑了）");
-	  info.text === '啊' &&   (exit = "你已经射，不能再继续挑战了。（你被女优们嘲笑了）");
-	  heixiu.count < 0 && (exit = "你已经精疲力尽，还是择日再战吧。（你被女优们嘲笑了）");
-	  
-	  if(exit){
-		  log.info(info.sp + " exit mode of heixiu and message = " + exit );
-		  delete heixiu;
-		  return exit;
+	  if(currentDate - heixiu.time  >= 300000){
+		  log.info(info.sp +" session time out then game over" );
+		  return ;
 	  }
 	  
-	  if(info.text === '振动器' ){
-		  if( heixiu.save >0){
-			  heixiu.save--;
-			  var one =  heixiu.lastAnswered = subject.next(answered);
-			  message = one && { title:'你知道我是谁吗?',pic: one.url, url: "/material/viewSubject.html?imageurl="+one.url};
-		  }else {
-			  message = "振动器已经用过了，那个女优还在那里爽。你还有" + ( --heixiu.count  ) + "次撸管的机会";
-		  }
-	  }else if (lastAnswered.name === info.text){
-		  var one =  heixiu.lastAnswered = subject.next(answered);
-		  message = one && { title:'你知道我是谁吗?',pic: one.url, url: "/material/viewSubject.html?imageurl="+one.url};
-	  }else{
-		  message = "你还有" + ( --heixiu.count  ) + "次撸管的机会。还有"+heixiu.save +"振动器可用。";
+	  (currentDate - heixiu.time  >= 180000) &&   (exit =  "奴家我等了好久了，还是算了吧!（你被女优们嘲笑了）");
+	  
+	  switch (info.text){
+	  case '啊':
+		  return "你已经射，不能再继续挑战了。（你被女优们嘲笑了）"; break;
+	  case '振动器':
+		  heixiuService.help(function (status ,times , help , subject){
+			  if( status === true){
+				  next (null, generatePic(obj.index , obj.subject));
+				  info.rewait();
+			  }else {
+				  next(null , "振动器已经用过了，那个女优还在那里爽。你还有" + ( help  ) + "次撸管的机会");
+			  }
+		  });
+		  break;
+		 
+	  default:
+		  heixiuService.nextSubject(info.text , function (status ,obj){
+			  if( status === true){
+				  next (null, generatePic(obj.index , obj.subject));
+				  info.rewait();
+			  }else if(times > 0 ) {
+				  next(null ,  "你还有" + obj.times + "次撸管的机会。还有"+ obj.help +"振动器可用。");
+			  }else if(status ==null ){
+				  info.flag = true;
+				  next(null , "你NB！就这样通关了。等着瞧");
+		  	  }else {
+		  		  var failSubject = heixiuService.getFailSubject(),
+		  		  	  html =  "你已经精疲力尽，还是择日再战吧。作为能坚持战斗的人，给你透露点消息:";
+		  		  
+		  		  _.each(failSubject , function (v,k){
+		  			html += "\n 第"+v.index+"号的名字是："+v.value;
+		  		  })
+				  next(null , html);
+			  }
+		  });
+	  		break;
 	  }
 	  
-	  
-	  // 通关
-	  if(message === false){
-		  info.flag = true;
-		  message = "通关啦！恭喜你成为了撸管高手。你将被列入撸管达人排行版。神秘大奖稍后联系你。"
-	  }else{
-		  if(heixiu.count < 0){
-			  log.info(info.sp + " exit mode of heixiu and message = " + "你已经精疲力尽，还是择日再战吧。（你被女优们嘲笑了）");
-			  return"你已经精疲力尽，还是择日再战吧。（你被女优们嘲笑了）";
-		  }
-		  heixiu.time = new Date().getTime();
-		  info.rewait();
-	  }
-	  
-	  log.info(info.sp +" response message =  " + message  );
-	  return  message;
   })
   
   webot.set("heixiu",{
 	  pattern : '/^嘿咻$/',
-	  handler : function (info){
+	  handler : function (info , next){
 		 log.info(info.sp +" enter heixiu game  " );
 		 var heixiu =  info.session.heixiu = {
-				  time :  new Date().getTime() ,
-				  answered : {},
-				  count : 3,
-				  lastAnswered : {},
-				  save : 1
+				  time :  new Date().getTime(),
+				  heixiuService : new require("heixiu")(info.sp)
 		  } 
-		  info.wait("heixiu");
-		  var one =  heixiu.lastAnswered = subject.next(heixiu.answered);
-		  return { title:'你知道我是谁吗?',pic: one.url, url:  "/material/viewSubject.html?imageurl="+one.url};
+		 
+		 heixiuService.startGame(function (status , obj){
+			 if(status === false){
+				 next ( null , "对不起，你今天已经玩过了，择日在站吧！")
+				 return ;
+			 }
+			 info.wait("heixiu");
+			 next (null , generatePic(obj.subject));
+		 })
 	  }
   });
   
