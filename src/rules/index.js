@@ -93,13 +93,15 @@ module.exports = exports = function(webot){
 		  return ;
 	  }
 	  
-	  (currentDate - heixiu.time  >= 180000) &&   (exit =  "奴家我等了好久了，还是算了吧!（你被女优们嘲笑了）");
+	  if(currentDate - heixiu.time  >= 180000){
+		  return next ( null ,"奴家我等了好久了，还是算了吧!（你被女优们嘲笑了）");
+	  }
 	  
 	  var heixiuService = new HeixiuService(heixiu.heixiuService);
 	  
 	  switch (info.text){
 	  case '啊':
-		  return "你已经射，不能再继续挑战了。（你被女优们嘲笑了）"; break;
+		  return  next ( null ,"你已经射，不能再继续挑战了。（你被女优们嘲笑了）"); break;
 	  case '振动器':
 		  heixiuService.help(function (status ,obj){
 			  info.session.heixiu = {  time :  new Date().getTime(),  heixiuService : heixiuService } ;
@@ -138,7 +140,7 @@ module.exports = exports = function(webot){
 	  		break;
 	  }
 	  
-  })
+  });
   
   webot.set("heixiu",{
 	  pattern : '/^嘿咻$/',
