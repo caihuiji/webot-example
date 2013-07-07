@@ -29,7 +29,6 @@ module.exports = exports = function(app){
 	});
 	
 	app.get('/material/viewImage.html', function(req, res){
-		console.log(req.params.imageurl);
 		res.render("material/viewImage.html" ,{
 			imageurl:req.query.imageurl
 		});
