@@ -66,9 +66,7 @@ heixiu.prototype = {
 				
 				if(text !== null && this._getCurrentSubject().name !== text){
 					--this._maxTimes;
-					if(this._failSubject.length ===0 || this._failSubject[this._failSubject.length - 1].index !== this._currentIndex ){
-						this._failSubject.push({index : this._currentIndex , name :  this._getCurrentSubject().name});
-					}
+					this._generateFailSuject();
 					callback(false , this.getModel());
 					return ;
 				}
@@ -90,7 +88,7 @@ heixiu.prototype = {
 			}
 			
 			--this._help;
-			this._failSubject.push({index : this._currentIndex , name :  this._getCurrentSubject().name});
+			this._generateFailSuject();
 			this.nextSubject(null , callback);
 		},
 		
@@ -100,6 +98,13 @@ heixiu.prototype = {
 		
 		getModel : function (){
 			return {times : this._maxTimes , help :  this._help , subject :  this._getCurrentSubject() , index : this._currentIndex+1 };
+		},
+		
+		_generateFailSuject : function (){
+			//为空，或则已经推入
+			if(this._failSubject.length === 0 || this._failSubject[this._failSubject.length - 1].index !== this._currentIndex ){
+				this._failSubject.push({index : this._currentIndex , name :  this._getCurrentSubject().name});
+			}
 		},
 		
 		_subjects : [
