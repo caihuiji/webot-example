@@ -12,7 +12,7 @@ var crypto = require('crypto'),
  */
 module.exports = exports = function(webot){
 	
-	  var viewImage = "http://www.imama360.com/material/viewImage.html?imagesurl=";
+	  var viewImage = "http://www.imama360.com/material/viewImage.html?imageurl=";
 	
 /**************** subscribe or unsubscribe  **********************/
 	
