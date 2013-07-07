@@ -4,14 +4,15 @@ var crypto = require('crypto'),
 	log = new Log("log" , fs.createWriteStream(__dirname + '/log.log')),
 	_ = require('underscore')._,
 	subject = require('../dao/subject'),
-	torrent = require('../dao/torrent');
+	torrent = require('../dao/torrent'),
+	HeixiuService  = require("../dao/heixiu");
 
 /**
  * 初始化路由规则
  */
 module.exports = exports = function(webot){
 	
-	
+	  var viewImage = "http://www.imama360.com/material/viewImage.html?imagesurl=";
 	
 /**************** subscribe or unsubscribe  **********************/
 	
@@ -22,9 +23,9 @@ module.exports = exports = function(webot){
 	   handler: function(info){
 		   log.info(info.sp +" subscribed ");
 	        return 	"嘿嘿~ 健康生活就要开始咯！每天睡觉前，看看美女，梦会很美哦!!\n"+
-	        		"1 回复“强身健体” - 查看互动类答题模式。\n"+
-	        		"2 回复“拉上窗帘” - 查看大湿模式 。\n"+
-	        		"3 回复“help:意见” - 告诉我们需要改进和不足的地方。（help:美女多一点）";
+	        		"1 回复“1” - 查看互动类答题模式。\n"+
+	        		"2 回复“2” - 查看大湿模式 。\n"+
+	        		"3 回复“help:(意见)” - 告诉我们需要改进和不足的地方。（help:美女多一点）";
 	     }
   });
   
@@ -44,7 +45,7 @@ module.exports = exports = function(webot){
 	  handler : function (info){
 		  log.info(info.sp +" request text=拉上窗帘  ");
 		  return [
-		             {title: '大湿来告诉你', description: '大湿回复的内容为总网友期望指数最高的内容，详情查看更新列表，持续更新中...', pic: 'http://www.imama360.com/material/dashi.jpg', url: 'http://www.imama360.com/material/dashi.html'}
+		             {title: '大湿来告诉你', description: '大湿回复的内容为总网友期望指数最高的内容，详情查看更新列表，持续更新中...', pic: 'http://www.imama360.com/images/dashi.jpg', url: 'http://www.imama360.com/material/dashi.html'}
 		          ];
 	  }
   });
@@ -54,7 +55,7 @@ module.exports = exports = function(webot){
 	  handler : function (info){
 		  log.info(info.sp +" request text=强身健体  ");
 		  return [
-		          	{ title:'嘿咻 - 是一款互动类答题游戏',description:'本游戏重在促进狼友们认识更多的女优。',pic: 'http://www.imama360.com/material/heixiu.jpg', url: 'http://www.imama360.com/material/heixiu.html'}
+		          	{ title:'嘿咻 - 是一款互动类答题游戏',description:'本游戏重在促进狼友们认识更多的女优。',pic: 'http://www.imama360.com/images/heixiu.jpg', url: 'http://www.imama360.com/material/heixiu.html'}
 		         ];
 	  }
   });
@@ -67,24 +68,23 @@ module.exports = exports = function(webot){
 /************      答题       *************/
   
   
-  var urlPrefix = "/material/viewSubject.html";
+
   
   function  generatePic (index, subject){
 	  return  { 
 		  		title: index +'号：帅锅，觉得我咋样啊，知道我的名字吗？',
 		  		description : '如果不认识我，可以回复 “振动器” 进入一道题哦。',
 		  		pic: subject.url,
-		  		url:   urlPrefix+"?imageurl="+subject.url
+		  		url:   viewImage + subject.url
 		  		};
   };
   
-  webot.waitRule("heixiu",function (info ){
+  webot.waitRule("heixiu",function (info , next ){
 	  
 	  log.info(info.sp +" request text="+info.text );
 	  
 	  var exit = false ,
 	  	heixiu =  info.session.heixiu,
-	  	heixiuService = info.session.heixiuService,
 	  	currentDate = new Date().getTime();
 	  	
 	  
@@ -95,16 +95,19 @@ module.exports = exports = function(webot){
 	  
 	  (currentDate - heixiu.time  >= 180000) &&   (exit =  "奴家我等了好久了，还是算了吧!（你被女优们嘲笑了）");
 	  
+	  var heixiuService = new HeixiuService(heixiu.heixiuService);
+	  
 	  switch (info.text){
 	  case '啊':
 		  return "你已经射，不能再继续挑战了。（你被女优们嘲笑了）"; break;
 	  case '振动器':
-		  heixiuService.help(function (status ,times , help , subject){
+		  heixiuService.help(function (status ,obj){
+			  info.session.heixiu = {  time :  new Date().getTime(),  heixiuService : heixiuService } ;
+			  info.rewait();
 			  if( status === true){
 				  next (null, generatePic(obj.index , obj.subject));
-				  info.rewait();
 			  }else {
-				  next(null , "振动器已经用过了，那个女优还在那里爽。你还有" + ( help  ) + "次撸管的机会");
+				  next(null , "振动器已经用过了，那个女优还在那里爽。");
 			  }
 		  });
 		  break;
@@ -113,18 +116,21 @@ module.exports = exports = function(webot){
 		  heixiuService.nextSubject(info.text , function (status ,obj){
 			  if( status === true){
 				  next (null, generatePic(obj.index , obj.subject));
+				  info.session.heixiu = {  time :  new Date().getTime(),  heixiuService : heixiuService } ;
 				  info.rewait();
-			  }else if(times > 0 ) {
-				  next(null ,  "你还有" + obj.times + "次撸管的机会。还有"+ obj.help +"振动器可用。");
-			  }else if(status ==null ){
+			  }else if(status == null ){
 				  info.flag = true;
-				  next(null , "你NB！就这样通关了。等着瞧");
+				  next(null , "你NB！等着瞧，我们题库还会不断更新的。晚一点给你奖品");
+			  }else if(obj.times > 0 ) {
+				  next(null ,  "你还有" + obj.times + "次撸管的机会。还有"+ obj.help +"振动器可用。");
+				  info.session.heixiu = {  time :  new Date().getTime(),  heixiuService : heixiuService } ;
+				  info.rewait();
 		  	  }else {
 		  		  var failSubject = heixiuService.getFailSubject(),
 		  		  	  html =  "你已经精疲力尽，还是择日再战吧。作为能坚持战斗的人，给你透露点消息:";
 		  		  
 		  		  _.each(failSubject , function (v,k){
-		  			html += "\n 第"+v.index+"号的名字是："+v.value;
+		  			html += "\n 第"+ (v.index + 1) +"题的名字是："+v.name;
 		  		  })
 				  next(null , html);
 			  }
@@ -138,19 +144,23 @@ module.exports = exports = function(webot){
 	  pattern : '/^嘿咻$/',
 	  handler : function (info , next){
 		 log.info(info.sp +" enter heixiu game  " );
-		 var heixiu =  info.session.heixiu = {
-				  time :  new Date().getTime(),
-				  heixiuService : new require("heixiu")(info.sp)
-		  } 
+		 var heixiuService = new HeixiuService({_userId : info.sp});
 		 
 		 heixiuService.startGame(function (status , obj){
 			 if(status === false){
 				 next ( null , "对不起，你今天已经玩过了，择日在站吧！")
 				 return ;
 			 }
+			 
+			 info.session.heixiu = {
+					  time :  new Date().getTime(),
+					  heixiuService : heixiuService
+			  } ;
 			 info.wait("heixiu");
-			 next (null , generatePic(obj.subject));
-		 })
+			 next (null , generatePic(obj.index , obj.subject));
+		 });
+		 
+		
 	  }
   });
   
@@ -197,7 +207,7 @@ module.exports = exports = function(webot){
 		  log.info(info.sp +" can not answer in dashi = " + info.text );
 		  info.flag = true;
 		  var girl = subject.next([]);
-		  message =   { title:'老衲愚昧',description : "介绍个女优给你认识吧，这个的叫"+ girl.name,pic: girl.url, url: girl.url};
+		  message =   { title:'老衲愚昧',description : "介绍个女优给你认识吧，这个的叫"+ girl.name,pic: girl.url, url: viewImage + girl.url};
 		 // message =  "你所问的东西，老衲也不知，不过老衲学习一下下次再告诉你，你还有什么问的吗？";
 	  }
 	  
@@ -232,6 +242,17 @@ module.exports = exports = function(webot){
 		  log.info(info.sp +" comment help = " + info.text);
 		  info.flag = true;
 		  return "感谢你对我们提出的宝贵意见，希望你撸得愉快。";
+	  }
+  });
+  
+  
+  /* 打分 **/
+  webot.set("a",{
+	  pattern : '/^a$/',
+	  handler : function (info){
+		  log.info(info.sp +" comment a = " + info.text);
+		  info.flag = true;
+		  return "感谢您的评价，您的评价是对我们最大的进步。";
 	  }
   });
   

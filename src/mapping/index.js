@@ -28,9 +28,9 @@ module.exports = exports = function(app){
 		res.render("material/heixiu.html");
 	});
 	
-	app.get('/material/viewSubject.html', function(req, res){
+	app.get('/material/viewImage.html', function(req, res){
 		console.log(req.params.imageurl);
-		res.render("material/viewSubject.html" ,{
+		res.render("material/viewImage.html" ,{
 			imageurl:req.query.imageurl
 		});
 	});
