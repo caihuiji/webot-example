@@ -263,7 +263,7 @@ module.exports = exports = function(webot){
 	  pattern : '/^.*$/',
 	  handler : function (info){
 		  log.info(info.sp +" comment a = " + info.text);
-		  return "我太笨了，不能理解你的意思。你可以回复“1”查看大湿模式，也是大湿能解决你的问题。";
+		  return "我太笨了，不能理解你的意思。你可以回复“1”查看大湿模式，也许大湿能解决你的问题。";
 	  }
   });
   
