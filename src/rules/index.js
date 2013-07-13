@@ -25,7 +25,7 @@ module.exports = exports = function(webot){
 	      return false; 
 	    },
 	   handler: function(info){
-		   log.info(info.sp +" subscribed ");
+		   log.info(info.uid +" subscribed ");
 	        return 	"嘿嘿~ 健康生活就要开始咯！每天睡觉前，看看美女，梦会很美哦!!\n"+
 	        		"1 回复“1” - 查看互动类答题模式\n"+
 	        		"2 回复“2” - 查看大湿模式 \n"+
@@ -36,7 +36,7 @@ module.exports = exports = function(webot){
   
   webot.set("unsubscribe" , {
 	  pattern: function(info) {
-		  log.info(info.sp +" unsubscribed ");
+		  log.info(info.uid +" unsubscribed ");
 	      return info.is('event') && info.param.event === 'unsubscribe' ;
 	    }
   });
@@ -48,7 +48,7 @@ module.exports = exports = function(webot){
   webot.set('lashangchuanglian', {
 	  pattern : '/^(1)|(拉上窗帘)$/',
 	  handler : function (info){
-		  log.info(info.sp +" request text=拉上窗帘  ");
+		  log.info(info.uid +" request text=拉上窗帘  ");
 		  return [
 		             {title: '大湿来告诉你', description: '大湿回复的内容为总网友期望指数最高的内容，详情查看更新列表，持续更新中...', pic: 'http://www.imama360.com/images/dashi.jpg', url: 'http://www.imama360.com/material/dashi.html'}
 		          ];
@@ -58,7 +58,7 @@ module.exports = exports = function(webot){
   webot.set('qiangshengjianti', {
 	  pattern : '/^(2)|(强身健体)$/',
 	  handler : function (info){
-		  log.info(info.sp +" request text=强身健体  ");
+		  log.info(info.uid +" request text=强身健体  ");
 		  return [
 		          	{ title:'嘿咻 - 是一款互动类答题游戏',description:'让我们在游戏中欣赏美女吧。',pic: 'http://www.imama360.com/images/heixiu.jpg', url: 'http://www.imama360.com/material/heixiu.html'}
 		         ];
@@ -68,7 +68,7 @@ module.exports = exports = function(webot){
   webot.set('top', {
 	  pattern : '/^3$/',
 	  handler : function (info){
-		  log.info(info.sp +" request text=top");
+		  log.info(info.uid +" request text=top");
 		  var content = '"嘿咻"英雄版 TOP 5 \n',
 		  	  top = ranking.top();
 		  
@@ -116,7 +116,7 @@ module.exports = exports = function(webot){
   
   webot.waitRule("heixiu",function (info , next ){
 	  
-	  log.info(info.sp +" request text="+info.text );
+	  log.info(info.uid +" request text="+info.text );
 	  
 	  var exit = false ,
 	  	heixiu =  info.session.heixiu,
@@ -124,7 +124,7 @@ module.exports = exports = function(webot){
 	  	
 	  
 	  if(currentDate - heixiu.time  >= 300000){
-		  log.info(info.sp +" session time out then game over" );
+		  log.info(info.uid +" session time out then game over" );
 		  return next(null , null);
 	  }
 	  
@@ -137,6 +137,7 @@ module.exports = exports = function(webot){
 	  var score = heixiu.score;
 	  switch (info.text){
 	  case '啊':
+		  log.info(info.uid +" exit heixiu ");
 		  return  next ( null ,"你已经射，不能再继续挑战了。（你被女优们嘲笑了）"); break;
 	  case '振动器':
 		  heixiuService.help(function (status ,obj){
@@ -161,7 +162,7 @@ module.exports = exports = function(webot){
 				  
 			  }else if(status == null ){
 				  info.flag = true;
-				  log.info(info.sp +" 通关." );
+				  log.info(info.uid +" win game." );
 				  ++score;
 				  next(null , "你NB！等着瞧，我们题库还会不断更新的。晚一点给你奖品");
 			  }else if(obj.times > 0 ) {
@@ -182,15 +183,15 @@ module.exports = exports = function(webot){
 		  });
 	  		break;
 	  }
-	  ranking.get(info.sp) < score && (ranking.add(info.sp , score));
+	  ranking.get(info.uid) < score && (ranking.add(info.uid , score));
 	  
   });
   
   webot.set("heixiu",{
 	  pattern : '/^嘿咻$/',
 	  handler : function (info , next){
-		 log.info(info.sp +" enter heixiu game  " );
-		 var heixiuService = new HeixiuService({_userId : info.sp});
+		 log.info(info.uid +" enter heixiu game  " );
+		 var heixiuService = new HeixiuService({_userId : info.uid});
 		 
 		 heixiuService.startGame(function (status , obj){
 			 if(status === false){
@@ -216,10 +217,10 @@ module.exports = exports = function(webot){
   
   webot.waitRule("dashi",function (info ){
 	  
-	  log.info(info.sp +" request text="+info.text );
+	  log.info(info.uid +" request text="+info.text );
 	  
 	  if(new Date().getTime() - info.session.dashi  >= 300000){
-		  log.info(info.sp +" session time out " );
+		  log.info(info.uid +" session time out " );
 		  return ;
 	  }
 	  
@@ -229,7 +230,7 @@ module.exports = exports = function(webot){
 	  info.text === '谢谢大师' &&  ( exit = '尼玛，是大湿! 大湿! 大湿! 滚粗。（大湿气愤地走掉）');
 	  
 	  if(exit){
-		  log.info(info.sp +" exit mode of dashi and message = "+ exit );
+		  log.info(info.uid +" exit mode of dashi and message = "+ exit );
 		  delete info.session.dashi;
 		  return exit;
 	  }
@@ -238,7 +239,7 @@ module.exports = exports = function(webot){
 	  // 搜索列表
 	  if(data){
 		  message =  data.url + "\n(友情提示：使用电脑输入链接下载。)";
-		  log.info(info.sp +" answer in dashi = " + info.text );
+		  log.info(info.uid +" answer in dashi = " + info.text );
 	  } else if (/(龚玥菲)|(金瓶梅)/gi.test(info.text)){
 		  message = [
 		             {title:"你尽然知道这个东西，给你" ,description :"<新金瓶梅> - 2013 年上映，高清种子或则征求中。。" ,pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uW18P7ViaD7jmGqAIUzw5a6g7cAficYjbG5r3F9IFok0XFA/0',url:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uW18P7ViaD7jmGqAIUzw5a6g7cAficYjbG5r3F9IFok0XFA/0' },
@@ -251,7 +252,7 @@ module.exports = exports = function(webot){
 	  } else if (subject.contain(info.text)) {
 		  message = "嗯... 这是好东西啊，你过一段时间再来找我，应该就有了。";
 	  }  else {
-		  log.info(info.sp +" can not answer in dashi = " + info.text );
+		  log.info(info.uid +" can not answer in dashi = " + info.text );
 		  info.flag = true;
 		  var girl = subject.next([]);
 		  message =   { title:'老衲愚昧',description : "介绍个女优给你认识吧，这个的叫"+ girl.name,pic: girl.url, url: viewImage + girl.url};
@@ -261,7 +262,7 @@ module.exports = exports = function(webot){
 	  info.session.dashi = new Date().getTime();
 	  info.rewait();
 	  
-	  log.info(info.sp +" response message = "+ message );
+	  log.info(info.uid +" response message = "+ message );
 	  
 	  
 	  return message; 
@@ -270,7 +271,7 @@ module.exports = exports = function(webot){
   webot.set("dashi",{
 	  pattern : '/^大湿$/',
 	  handler : function (info){
-		  log.info(info.sp +" request text=大湿  and enter the mode of dashi");
+		  log.info(info.uid +" request text=大湿  and enter the mode of dashi");
 		  info.session.dashi =   new Date().getTime() ;
 		  info.wait("dashi");
 		  return "说出你想要的吧，老衲尽可能满足你的欲望。";
@@ -286,7 +287,7 @@ module.exports = exports = function(webot){
   webot.set("help",{
 	  pattern : '/^help.*$/',
 	  handler : function (info){
-		  log.info(info.sp +" comment help = " + info.text);
+		  log.info(info.uid +" comment help = " + info.text);
 		  info.flag = true;
 		  return "感谢你对我们提出的宝贵意见，希望你撸得愉快。";
 	  }
@@ -297,7 +298,7 @@ module.exports = exports = function(webot){
   webot.set("a",{
 	  pattern : '/^a$/',
 	  handler : function (info){
-		  log.info(info.sp +" comment a = " + info.text);
+		  log.info(info.uid +" comment a = " + info.text);
 		  info.flag = true;
 		  return "感谢您的评价，您的评价是对我们最大的进步。";
 	  }
@@ -307,7 +308,7 @@ module.exports = exports = function(webot){
   webot.set("last",{
 	  pattern : '/.*/',
 	  handler : function (info){
-		  log.info(info.sp +" comment a = " + info.text);
+		  log.info(info.uid +" comment a = " + info.text);
 		  return "我太笨了，不能理解你的意思。你可以回复“1”查看大湿模式，也许大湿能解决你的问题。";
 	  }
   });
