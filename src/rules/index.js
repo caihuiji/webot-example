@@ -5,7 +5,8 @@ var crypto = require('crypto'),
 	_ = require('underscore')._,
 	subject = require('../dao/subject'),
 	torrent = require('../dao/torrent'),
-	HeixiuService  = require("../dao/heixiu");
+	HeixiuService  = require("../dao/heixiu"),
+	ranking  = require("../dao/ranking"),
 
 /**
  * 初始化路由规则
@@ -25,7 +26,8 @@ module.exports = exports = function(webot){
 	        return 	"嘿嘿~ 健康生活就要开始咯！每天睡觉前，看看美女，梦会很美哦!!\n"+
 	        		"1 回复“1” - 查看互动类答题模式。\n"+
 	        		"2 回复“2” - 查看大湿模式 。\n"+
-	        		"3 回复“help:(意见)” - 告诉我们需要改进和不足的地方。（help:美女多一点）";
+	        		"3 回复“3” - 查看答题TOP 5 。\n"+
+			        "4 回复“help:(意见)” - 告诉我们需要改进和不足的地方。（help:美女多一点）";
 	     }
   });
   
@@ -57,6 +59,24 @@ module.exports = exports = function(webot){
 		  return [
 		          	{ title:'嘿咻 - 是一款互动类答题游戏',description:'让我们在游戏中欣赏美女吧。',pic: 'http://www.imama360.com/images/heixiu.jpg', url: 'http://www.imama360.com/material/heixiu.html'}
 		         ];
+	  }
+  });
+  
+  webot.set('top', {
+	  pattern : '/^3$/',
+	  handler : function (info){
+		  log.info(info.sp +" request text=top");
+		  var content = '"嘿咻"英雄版 TOP 5 \n',
+		  	  top = ranking.top();
+		  
+		  top.length < 5 && (top = [10,8,6,3,2] ); 
+		  
+		  
+		  for(var i = 0 ; i < 5 ; i++){
+			  content += '第一名:'+top[i] +"题 \n";
+		  }
+		  
+		  return content;
 	  }
   });
   
@@ -104,18 +124,20 @@ module.exports = exports = function(webot){
 	  
 	  var heixiuService = new HeixiuService(heixiu.heixiuService);
 	  
+	  var score = heixiu.score;
 	  switch (info.text){
 	  case '啊':
 		  return  next ( null ,"你已经射，不能再继续挑战了。（你被女优们嘲笑了）"); break;
 	  case '振动器':
 		  heixiuService.help(function (status ,obj){
-			  info.session.heixiu = {  time :  new Date().getTime(),  heixiuService : heixiuService } ;
-			  info.rewait();
 			  if( status === true){
+				  ++score;
 				  next (null, generatePic(obj.index , obj.subject));
 			  }else {
 				  next(null , "振动器已经用过了，那个女优还在那里爽。");
 			  }
+			  info.session.heixiu = {  time :  new Date().getTime(),  heixiuService : heixiuService , score : score} ;
+			  info.rewait();
 		  });
 		  break;
 		 
@@ -123,14 +145,18 @@ module.exports = exports = function(webot){
 		  heixiuService.nextSubject(info.text , function (status ,obj){
 			  if( status === true){
 				  next (null, generatePic(obj.index , obj.subject));
-				  info.session.heixiu = {  time :  new Date().getTime(),  heixiuService : heixiuService } ;
+				  ++score;
+				  info.session.heixiu = {  time :  new Date().getTime(),  heixiuService : heixiuService , score : score} ;
 				  info.rewait();
+				  
 			  }else if(status == null ){
 				  info.flag = true;
+				  log.info(info.sp +" 通关." );
+				  ++score;
 				  next(null , "你NB！等着瞧，我们题库还会不断更新的。晚一点给你奖品");
 			  }else if(obj.times > 0 ) {
 				  next(null ,  "你还有" + obj.times + "次撸管的机会。还有"+ obj.help +"振动器可用。");
-				  info.session.heixiu = {  time :  new Date().getTime(),  heixiuService : heixiuService } ;
+				  info.session.heixiu = {  time :  new Date().getTime(),  heixiuService : heixiuService , score : score } ;
 				  info.rewait();
 		  	  }else {
 		  		  var failSubject = heixiuService.getFailSubject(),
@@ -141,9 +167,12 @@ module.exports = exports = function(webot){
 		  		  })
 				  next(null , html);
 			  }
+			  
+			  
 		  });
 	  		break;
 	  }
+	  ranking.get(info.sp) < score && (ranking.add(info.sp , score));
 	  
   });
   
@@ -161,7 +190,8 @@ module.exports = exports = function(webot){
 			 
 			 info.session.heixiu = {
 					  time :  new Date().getTime(),
-					  heixiuService : heixiuService
+					  heixiuService : heixiuService,
+					  score : 0
 			  } ;
 			 info.wait("heixiu");
 			 next (null , generatePic(obj.index , obj.subject));
