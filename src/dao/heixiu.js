@@ -8,11 +8,15 @@ var heixiu = module.exports = function (setting){
 		
 		_answeredIndex : [],
 		
+		_confusionIndex : [],
+		
+		_failSubject : [],
+		
+		_currentQuestion : {},
+		
 		_help : 1,
 		
-		_currentIndex : -1,
-		
-		_failSubject : []
+		_currentIndex : -1
 	
 		},
 		setting);
@@ -23,21 +27,9 @@ var heixiu = module.exports = function (setting){
 heixiu.prototype = {
 		
 		
-		_exchange : function (array){
-			var temp , index  ;
-			for(var i = 0 ;i < array.length ; i++){
-				index =  parseInt( Math.random() * (array.length));
-				temp = array[i];
-				array[i] = array[index];
-				array[index] = temp;
-			}
-		},
-		
-		_getCurrentSubject : function (){
-			return this._subjects[this._answeredIndex[this._currentIndex]];
-		},
-		
-		
+		/**
+		 * 获得所有回答错误的题目
+		 */
 		getFailSubject : function (){
 			return this._failSubject;
 		},
@@ -47,31 +39,36 @@ heixiu.prototype = {
 				this._answeredIndex[i] = i;
 			}
 			
-			this._exchange(this._answeredIndex);
+			for(var i = 0 ;i<this._confusionSubject.length ; i++){
+				this._confusionIndex[i] = i;
+			}
+			
+			this._exchangeIndex(this._answeredIndex);
+			this._exchangeIndex(this._confusionIndex);
+			
 			
 			this.nextSubject(null , callback);
 		},
 		
 		/**
-		 * null 通关
-		 * true 成功 
-		 * false 失败
+		 * null 通关 true 成功 false 失败
 		 */
 		nextSubject : function ( text ,  callback){
+				// 超过回答错误
 				if(this._maxTimes <= 0  ){
 					callback(false , this.getModel());
 					return ;
 				}
 				
-				
-				if(text !== null && this._getCurrentSubject().name !== text){
+				// 回答错误
+				if(text !== null && this._currentQuestion.subject.subject.name !== text && this._currentQuestion.subject.correct !== text){
 					--this._maxTimes;
-					this._generateFailSuject();
+					this._recordFailSuject();
 					callback(false , this.getModel());
 					return ;
 				}
 				
-				
+				// 通关
 				if( (this._currentIndex + 1) >=  this._subjects.length ){
 					callback(null , this.getModel());
 					return ;
@@ -88,7 +85,7 @@ heixiu.prototype = {
 			}
 			
 			--this._help;
-			this._generateFailSuject();
+			this._recordFailSuject();
 			this.nextSubject(null , callback);
 		},
 		
@@ -97,15 +94,95 @@ heixiu.prototype = {
 		},
 		
 		getModel : function (){
-			return {times : this._maxTimes , help :  this._help , subject :  this._getCurrentSubject() , index : this._currentIndex+1 };
+			if(this._currentQuestion.index === this._currentIndex+1){
+				this._currentQuestion.times = this._maxTimes;
+				this._currentQuestion.help =  this._help;
+				return this._currentQuestion;
+			}
+			
+			this._currentQuestion = this._generateQuestion (this._getCurrentSubject());
+			return (this._currentQuestion = {times : this._maxTimes , help :  this._help , subject :  this._currentQuestion , index : this._currentIndex+1 });
 		},
 		
-		_generateFailSuject : function (){
-			//为空，或则已经推入
-			if(this._failSubject.length === 0 || this._failSubject[this._failSubject.length - 1].index !== this._currentIndex ){
-				this._failSubject.push({index : this._currentIndex , name :  this._getCurrentSubject().name});
+		/**
+		 * 混乱下表
+		 */
+		_exchangeIndex : function (array , orgCallback , newCallback){
+			var temp , index  ;
+			for(var i = 0 ;i < array.length ; i++){
+				index =  parseInt( Math.random() * (array.length));
+				temp = array[i];
+				array[i] = array[index];
+				array[index] = temp;
+				orgCallback && orgCallback (array , i);
+				newCallback && newCallback (array , index );
 			}
 		},
+		
+		
+		_getCurrentSubject : function (){
+			return this._subjects[this._answeredIndex[this._currentIndex]];
+		},
+		
+		_getActuallyConfusionSubject : function (index){
+			return this._confusionSubject[this._confusionIndex[index]];
+		},
+		
+		/**
+		 * 注入回答错误的模型
+		 */
+		_recordFailSuject : function (){
+			// 为空，或则已经推入
+			if(this._failSubject.length === 0 || this._failSubject[this._failSubject.length - 1].index !== this._currentIndex ){
+				this._failSubject.push({index : this._currentIndex , correct :  this._currentQuestion.subject.correct + "." + this._currentQuestion.subject.subject.name});
+			}
+		},
+		
+		/**
+		 * 生成问题
+		 */
+		_generateQuestion : function (model ){
+			
+			var questions = [] ,
+				correct = '',
+				failSubjectIndex =  parseInt( Math.random() * (this._confusionSubject.length));
+			
+			for(var i = 0 ; i <3; i++){
+				if(failSubjectIndex > this._confusionSubject.length-1){
+					failSubjectIndex = 0;
+				}
+				questions.push(this._getActuallyConfusionSubject(failSubjectIndex++));
+			}
+			questions.push(model.name);
+			
+			this._exchangeIndex(questions);
+			
+			for(var i = 0 ; i < questions.length ; i ++){
+					var prefix = null;
+					switch (i){
+					case 0 :  prefix = "a"; break; 
+					case 1 :  prefix = "b"; break;
+					case 2 :  prefix = "c"; break;
+					case 3 :  prefix = "d"; break;
+					}
+					model.name === questions[i] && (correct=prefix);
+					questions[i] = prefix + "." + questions[i];
+			};
+			
+			
+			var newModel = {
+					subject : model,
+					correct : correct,
+					questions:questions
+			};
+			
+			return newModel;
+		},
+		
+		
+		/**
+		 * 题目
+		 */
 		
 		_subjects : [
 		 	        {name :'大浦安娜' ,	url	: 'http://www.imama360.com/subject/1.jpg'},
@@ -128,7 +205,22 @@ heixiu.prototype = {
 		 			{name :'饭岛爱' ,	url	: 'http://www.imama360.com/subject/18.jpg'},
 		 			{name :'天海翼' ,	url	: 'http://www.imama360.com/subject/19.jpg'},
 		 			{name :'长谷川萌' ,	url	: 'http://www.imama360.com/subject/20.jpg'},
-		 			{name :'春咲梓美' ,	url	: 'http://www.imama360.com/subject/21.jpg'}
-		 		]
+		 			{name :'春咲梓美' ,	url	: 'http://www.imama360.com/subject/21.jpg'},
+		 			{name :'金莎' ,	url	: 'http://i3.hunantv.com/p1/20120410/1426262183.jpg'},
+		 			{name :'高圆圆' ,	url	: 'http://img4.duitang.com/uploads/item/201208/17/20120817215314_tt2eh.thumb.600_0.jpeg'},
+		 			{name :'张静初' ,	url	: 'http://www.chinanews.com/yl/2011/08-17/U253P4T8D3265244F107DT20110817171709.jpg'},
+		 			{name :'张柏芝' ,	url	: 'http://wowo.5d6d.com/attachment/200807/12/48581_1215854013jVkm.jpg'},
+		 			{name :'郭美美' ,	url	: 'http://www.imama360.com/subject/21.jpg'},
+		 			{name :'Angelababy' ,	url	: 'http://www.sinaimg.cn/dy/slidenews/4_img/2009_51/168_24405_145967.jpg'}
+		 		],
+		 		
+		 _confusionSubject : [
+  			 "秋本玲子", "秋菜里子", "凤姐", "谢娜", "宫本真美", "芙蓉姐姐", "李湘",
+			"高田礼子", "林志玲", "进藤玲菜", "郑秀文", "孙俪", "井上可奈", "刘亦菲", "臼井利奈","陈乔恩", "秋元优奈",
+			"如月可怜", "森下理音", "范冰冰", "吉川真奈美", "李小璐", "李小冉", "贾静雯",
+			"徐若瑄", "菊池丽香", "郭羡妮", "钟欣桐", "佘诗曼", "颜丹晨", "蒋勤勤", "酒井未希", "宋佳",
+			"唐嫣", "瞿颖", "陈紫函", "久保美希", "李冰冰", "若林树里", "若月树里", "李若彤", "慈禧太后",
+			"刘诗诗", "北条香理", "川滨奈美","杨幂","柳岩","秦岚","郑爽","李宇春","陈妍希","李心艾"
+		 ]
 };
 		

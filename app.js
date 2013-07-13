@@ -24,7 +24,7 @@ app.configure(function(){
 	  app.use(express.static(__dirname + '/public' , {maxAge: 604800000}));
 	  
 	  app.use(express.cookieParser());
-	  app.use(express.session({secret:'abcder',store: new express.session.MemoryStore()}));
+	  app.use(express.session({secret:'abcder',store: new express.session.MemoryStore()  }));
 
 });
 

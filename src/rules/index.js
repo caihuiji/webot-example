@@ -71,11 +71,16 @@ module.exports = exports = function(webot){
 
   
   function  generatePic (index, subject){
+	  var description  = "";
+	  
+	  _.each(subject.questions,function ( value , key){
+		 description += value+"\n"; 
+	  });
 	  return  { 
 		  		title: index +'号：帅锅，觉得我咋样啊，知道我的名字吗？',
-		  		description : '如果不认识我，可以回复 “振动器” 进入一道题哦。',
-		  		pic: subject.url,
-		  		url:   viewImage + subject.url
+		  		description : description + '(提示:回复 “振动器” 跳过此道题)',
+		  		pic: subject.subject.url,
+		  		url:   viewImage + subject.subject.url
 		  		};
   };
   
@@ -132,7 +137,7 @@ module.exports = exports = function(webot){
 		  		  	  html =  "你已经精疲力尽，还是择日再战吧。作为能坚持战斗的人，给你透露点消息:";
 		  		  
 		  		  _.each(failSubject , function (v,k){
-		  			html += "\n 第"+ (v.index + 1) +"题的名字是："+v.name;
+		  			html += "\n 第"+ (v.index + 1) +"题的答案是："+v.correct;
 		  		  })
 				  next(null , html);
 			  }
