@@ -72,11 +72,11 @@ module.exports = exports = function(webot){
 		  //top.length < 5 && (top = [10,8,6,3,2] ); 
 		  
 		  
-		  for(var i = 0 ; i < 5 ; i++){
+		  for(var i = 0 ; i < 5 && i<top.length ; i++){
 			  content += '第'+(i+1)+'名:'+top[i] +"题 \n";
 		  }
 		  
-		  content += '目前也有' + top.length +"参与。";
+		  content += '目前已有' + top.length + "人参与。";
 		  
 		  return content;
 	  }
