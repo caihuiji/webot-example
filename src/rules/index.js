@@ -24,9 +24,9 @@ module.exports = exports = function(webot){
 	   handler: function(info){
 		   log.info(info.sp +" subscribed ");
 	        return 	"嘿嘿~ 健康生活就要开始咯！每天睡觉前，看看美女，梦会很美哦!!\n"+
-	        		"1 回复“1” - 查看互动类答题模式。\n"+
-	        		"2 回复“2” - 查看大湿模式 。\n"+
-	        		"3 回复“3” - 查看答题TOP 5 。\n"+
+	        		"1 回复“1” - 查看互动类答题模式\n"+
+	        		"2 回复“2” - 查看大湿模式 \n"+
+	        		"3 回复“3” - 查看答题TOP 5 \n"+
 			        "4 回复“4” - 查看说明";
 	     }
   });
