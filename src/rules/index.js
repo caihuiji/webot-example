@@ -19,7 +19,7 @@ module.exports = exports = function(webot){
 	
   webot.set("subscribe" , {
 	  pattern: function(info) {
-	      return info.is('event') && info.param.event === 'subscribe' ;
+	      return (info.is('event') && info.param.event === 'subscribe') || "4" ;
 	    },
 	   handler: function(info){
 		   log.info(info.sp +" subscribed ");
@@ -27,7 +27,7 @@ module.exports = exports = function(webot){
 	        		"1 回复“1” - 查看互动类答题模式。\n"+
 	        		"2 回复“2” - 查看大湿模式 。\n"+
 	        		"3 回复“3” - 查看答题TOP 5 。\n"+
-			        "4 回复“help:(意见)” - 告诉我们需要改进和不足的地方。（help:美女多一点）";
+			        "4 回复“4” - 查看说明";
 	     }
   });
   
@@ -81,6 +81,8 @@ module.exports = exports = function(webot){
 		  return content;
 	  }
   });
+  
+  
   
   
   
