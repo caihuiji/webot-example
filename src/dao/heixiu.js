@@ -61,7 +61,7 @@ heixiu.prototype = {
 				}
 				
 				// 回答错误
-				if(text !== null && this._currentQuestion.subject.subject.name !== text && this._currentQuestion.subject.correct !== text){
+				if(text !== null && this._currentQuestion.subject.subject.name !== text && this._currentQuestion.subject.correct !== text.toLocaleLowerCase()){
 					--this._maxTimes;
 					this._recordFailSuject();
 					callback(false , this.getModel());
@@ -210,7 +210,7 @@ heixiu.prototype = {
 		 			{name :'高圆圆' ,	url	: 'http://img4.duitang.com/uploads/item/201208/17/20120817215314_tt2eh.thumb.600_0.jpeg'},
 		 			{name :'张静初' ,	url	: 'http://www.chinanews.com/yl/2011/08-17/U253P4T8D3265244F107DT20110817171709.jpg'},
 		 			{name :'张柏芝' ,	url	: 'http://wowo.5d6d.com/attachment/200807/12/48581_1215854013jVkm.jpg'},
-		 			{name :'郭美美' ,	url	: 'http://www.imama360.com/subject/21.jpg'},
+		 			{name :'郭美美' ,	url	: 'http://news.xinhuanet.com/yzyd/lady/20130712/168599959004075434321n.jpg'},
 		 			{name :'Angelababy' ,	url	: 'http://www.sinaimg.cn/dy/slidenews/4_img/2009_51/168_24405_145967.jpg'}
 		 		],
 		 		
