@@ -55,7 +55,7 @@ module.exports = exports = function(webot){
 	  handler : function (info){
 		  log.info(info.sp +" request text=强身健体  ");
 		  return [
-		          	{ title:'嘿咻 - 是一款互动类答题游戏',description:'本游戏重在促进狼友们认识更多的女优。',pic: 'http://www.imama360.com/images/heixiu.jpg', url: 'http://www.imama360.com/material/heixiu.html'}
+		          	{ title:'嘿咻 - 是一款互动类答题游戏',description:'让我们在游戏中欣赏美女吧。',pic: 'http://www.imama360.com/images/heixiu.jpg', url: 'http://www.imama360.com/material/heixiu.html'}
 		         ];
 	  }
   });
