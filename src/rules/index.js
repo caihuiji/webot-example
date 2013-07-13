@@ -95,7 +95,7 @@ module.exports = exports = function(webot){
 	  
 	  if(currentDate - heixiu.time  >= 300000){
 		  log.info(info.sp +" session time out then game over" );
-		  return ;
+		  return next(null , null);
 	  }
 	  
 	  if(currentDate - heixiu.time  >= 180000){
