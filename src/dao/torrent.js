@@ -15,12 +15,13 @@ module.exports = torrent = {
 		},
 		
 		_torrents : {
-			'麻生希'	: 'http://www.imama360.com/girls/mashengxi.html',
-			'松岛枫'	: 'http://www.imama360.com/girls/songdaofeng.html',
-			'波多野结衣'	: 'http://www.imama360.com/girls/boduoyejieyi.html',
-			'苍井空'	: 'http://www.imama360.com/girls/cangjingkong.html',
-			'泷泽萝拉'	: 'http://www.imama360.com/girls/longzeluola.html',
-			'濑亚美莉'	: 'http://t.cn/zTmLWhE',
-			'天海翼'	: 'http://t.cn/zQPIVrF'
+			'麻生希'	: 'http://t.cn/zQUZHK0',
+			'松岛枫'	: 'http://t.cn/zQUZYnL',
+			'波多野结衣'	: 'http://t.cn/zQUZnoo',
+			'苍井空'	: 'http://t.cn/zQUZEww',
+			'泷泽萝拉'	: 'http://t.cn/zQUZ854',
+			'濑亚美莉'	: 'http://t.cn/zQUZgvF',
+			'天海翼'	: 'http://t.cn/zQUZphT',
+			'柚木提娜'	: 'http://t.cn/zQUZvNq'
 		}
 }
