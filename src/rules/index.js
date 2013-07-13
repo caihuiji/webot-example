@@ -19,7 +19,10 @@ module.exports = exports = function(webot){
 	
   webot.set("subscribe" , {
 	  pattern: function(info) {
-	      return (info.is('event') && info.param.event === 'subscribe') || "4" ;
+		  if((info.is('event') && info.param.event === 'subscribe')   || info.text === '4'){
+			  return true;
+		  }
+	      return false; 
 	    },
 	   handler: function(info){
 		   log.info(info.sp +" subscribed ");
