@@ -211,12 +211,15 @@ heixiu.prototype = {
 		 			{name :'张静初' ,	url	: 'http://www.chinanews.com/yl/2011/08-17/U253P4T8D3265244F107DT20110817171709.jpg'},
 		 			{name :'张柏芝' ,	url	: 'http://wowo.5d6d.com/attachment/200807/12/48581_1215854013jVkm.jpg'},
 		 			{name :'郭美美' ,	url	: 'http://news.xinhuanet.com/yzyd/lady/20130712/168599959004075434321n.jpg'},
-		 			{name :'Angelababy' ,	url	: 'http://www.sinaimg.cn/dy/slidenews/4_img/2009_51/168_24405_145967.jpg'}
+		 			{name :'Angelababy' ,	url	: 'http://www.sinaimg.cn/dy/slidenews/4_img/2009_51/168_24405_145967.jpg'},
+		 			{name :'刘亦菲' ,	url	: 'http://pic.wenwen.soso.com/p/20110811/20110811152419-640520516.jpg'},
+		 			{name :'古力娜扎' ,	url	: 'http://upload.ellechina.com/2012/0725/thumb_465_600_1343190998130.jpg'},
+		 			{name :'张馨予' ,	url	: 'http://www.gaoan.so/upload/news/2012-9-13/201291372032b9k56.jpg'}
 		 		],
 		 		
 		 _confusionSubject : [
   			 "秋本玲子", "秋菜里子", "凤姐", "谢娜", "宫本真美", "芙蓉姐姐", "李湘",
-			"高田礼子", "林志玲", "进藤玲菜", "郑秀文", "孙俪", "井上可奈", "刘亦菲", "臼井利奈","陈乔恩", "秋元优奈",
+			"高田礼子", "林志玲", "进藤玲菜", "郑秀文", "孙俪", "井上可奈", "臼井利奈","陈乔恩", "秋元优奈",
 			"如月可怜", "森下理音", "范冰冰", "吉川真奈美", "李小璐", "李小冉", "贾静雯",
 			"徐若瑄", "菊池丽香", "郭羡妮", "钟欣桐", "佘诗曼", "颜丹晨", "蒋勤勤", "酒井未希", "宋佳",
 			"唐嫣", "瞿颖", "陈紫函", "久保美希", "李冰冰", "若林树里", "若月树里", "李若彤", "慈禧太后",
