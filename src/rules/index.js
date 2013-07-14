@@ -249,7 +249,7 @@ module.exports = exports = function(webot){
 		             {title:"第二卷：色劫篇"  ,  pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uVloYPpKl6sXNRWt09tLibibl0SEM3KiaOzrQicYVtbNwvoHg/0',url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000062&itemidx=1&sign=f2e3d238fdadb7f9e5641a62658b6e08' },
 		             {title:"第三卷：情乱篇"  , pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uW18P7ViaD7jmGqAIUzw5a6gH2F8HRib4qG1icJIbsYictvdQ/0' , url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000088&itemidx=1&sign=dd8158b6717754350cc019c5b362bbf5'},
 		             {title:"第四卷：命逝篇(完结篇)"  , pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uWSeR5Ap6iamXTACdEDKCQibR7LmIVNJeQcCGtuhqgUChzw/0' , url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000091&itemidx=1&sign=69a9aa534844161bad0186f8fc0573ab'},
-		             {title:"龚玥菲-经典写真"  , pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uWSeR5Ap6iamXTACdEDKCQibR7LmIVNJeQcCGtuhqgUChzw/0' , url:'http://www.imama360.com/girls/gongyuefei.html'}
+		             {title:"龚玥菲-经典写真"  , pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uWSeR5Ap6iamXTACdEDKCQibR7LmIVNJeQcCGtuhqgUChzw/0' , url:'http://pan.baidu.com/share/link?shareid=772994612&uk=4080056354'}
 		             ];
 	  } else if (subject.contain(info.text)) {
 		  message = "嗯... 这是好东西啊，你过一段时间再来找我，应该就有了。";
