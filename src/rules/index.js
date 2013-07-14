@@ -73,7 +73,7 @@ module.exports = exports = function(webot){
 		  	  top = ranking.top();
 		  
 		  
-		  top.concat([30,30,18,17,12,10]).sort(function (a,b){return a < b;}
+		  top.concat([30,30,18,17,12,10]).sort(function (a,b){return a < b;});
 		  
 		  
 		  var max = 4;
