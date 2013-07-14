@@ -70,10 +70,10 @@ module.exports = exports = function(webot){
 	  handler : function (info){
 		  log.info(info.uid +" request text=top");
 		  var content = '"嘿咻"英雄版 TOP 5 \n',
-		  	  top = ranking.top();
+		  	  top =  ranking.top();
 		  
 		  
-		  top = top.concat([30,30,18,17,12,10]).sort(function (a,b){return a < b;});
+		  top = top.concat([30,30,30,18,17,12,10]).sort(function (a,b){ if(a<b) return 1 ;else return -1;});
 		  
 		  
 		  var max = 4;

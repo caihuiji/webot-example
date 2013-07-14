@@ -21,7 +21,7 @@ module.exports = ranking = {
 			_.each(this._ranking , function (value , key){
 				newArray.push(value);
 			});
-			return  newArray.sort(function (a,b){return a < b;});
+			return  newArray.sort(function (a,b){ if(a<b) return 1 ;else return -1;});
 		}
 		
 }
