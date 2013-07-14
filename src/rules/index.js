@@ -72,7 +72,9 @@ module.exports = exports = function(webot){
 		  var content = '"嘿咻"英雄版 TOP 5 \n',
 		  	  top = ranking.top();
 		  
-		  top.length < 5 && (top = top.concat([15,12,11,9,7,5]).sort(function (a,b){return a < b;})); 
+		  
+		  top.concat([30,30,18,17,12,10]).sort(function (a,b){return a < b;}
+		  
 		  
 		  var max = 4;
 		  for(var i = 0 ;  i<top.length ; i++){

@@ -61,7 +61,7 @@ heixiu.prototype = {
 				}
 				
 				// 回答错误
-				if(text !== null && this._currentQuestion.subject.subject.name !== text && this._currentQuestion.subject.correct !== text.toLocaleLowerCase()){
+				if(text != null && this._currentQuestion.subject.subject.name !== text && this._currentQuestion.subject.correct !== text.toLocaleLowerCase()){
 					--this._maxTimes;
 					this._recordFailSuject();
 					callback(false , this.getModel());
