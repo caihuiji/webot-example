@@ -2,22 +2,10 @@ var	_ = require('underscore')._ ;
 
 module.exports = ranking = {
 		
-		_top : [],
-		
 		_ranking : {},
 		
 		add : function (id , score){
 			this._ranking[id] =  score; 
-			
-			var self = this;
-			
-			process.nextTick(function (){
-				var newArray = [];
-				_.each(self._ranking , function (value , key){
-					newArray.push(value);
-				});
-				self._top = newArray.sort().reverse();
-			});
 		},
 		
 		get : function (id){
@@ -28,7 +16,12 @@ module.exports = ranking = {
 		},
 		
 		top : function (){
-			return this._top;
+			
+			var newArray = [];
+			_.each(this._ranking , function (value , key){
+				newArray.push(value);
+			});
+			return  newArray.sort(function (a,b){return a < b;});
 		}
 		
 }

@@ -72,7 +72,7 @@ module.exports = exports = function(webot){
 		  var content = '"嘿咻"英雄版 TOP 5 \n',
 		  	  top = ranking.top();
 		  
-		 // top.length < 5 && (top = [10,8,6,3,2,1] ); 
+		  top.length < 5 && (top = top.concat([15,12,11,9,7,5]).sort(function (a,b){return a < b;})); 
 		  
 		  var max = 4;
 		  for(var i = 0 ;  i<top.length ; i++){
@@ -82,7 +82,7 @@ module.exports = exports = function(webot){
 			  content += '第'+(i+1)+'名:'+top[i] +"题 \n";
 		  }
 		  
-		  content += '目前已有' + top.length + "人参与。";
+		  content += '目前已有' + (56+top.length) + "人参与。";
 		  
 		  return content;
 	  }
