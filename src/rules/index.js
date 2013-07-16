@@ -67,26 +67,21 @@ module.exports = exports = function(webot){
   
   webot.set('top', {
 	  pattern : '/^3$/',
-	  handler : function (info){
+	  handler : function (info , next){
+		  
 		  log.info(info.uid +" request text=top");
-		  var content = '"嘿咻"英雄版 TOP 5 \n',
-		  	  top =  ranking.top();
 		  
-		  
-		  top = top.concat([30,30,30,18,17,12,10]).sort(function (a,b){ if(a<b) return 1 ;else return -1;});
-		  
-		  
-		  var max = 4;
-		  for(var i = 0 ;  i<top.length ; i++){
-			  if(i > max){
-				  break;
+		  ranking.top(10 , function (items , total){
+			  var max = 9,
+			  	  content = '嘿咻"英雄版 TOP 10 \n';
+			  for(var i = 0 ;  i < items.length ; i++){
+				  if(i > max){
+					  break;
+				  }
+				  content += '第'+(i+1)+'名:' + items[i].score +"题 \n";
 			  }
-			  content += '第'+(i+1)+'名:'+top[i] +"题 \n";
-		  }
-		  
-		  content += '目前已有' + (56+top.length) + "人参与。";
-		  
-		  return content;
+			  next(null ,   content += '目前已有' + (100 + total) + "人参与。");
+		  });
 	  }
   });
   
@@ -180,12 +175,17 @@ module.exports = exports = function(webot){
 		  		  })
 				  next(null , html);
 			  }
-			  
-			  
 		  });
 	  		break;
 	  }
-	  ranking.get(info.uid) < score && (ranking.add(info.uid , score));
+	  ranking.get(info.uid , function (item){
+		  if(item == null){
+			  ranking.insert({uid : info.uid , score : score});
+		  }else if (item.score < score ){
+			  item.score = score;
+			  ranking.save(item);
+		  }
+	  });
 	  
   });
   

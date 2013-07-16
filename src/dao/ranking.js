@@ -1,27 +1,29 @@
-var	_ = require('underscore')._ ;
+var	_ = require('underscore')._ ,
+	 mongo = require('mongoskin'),
+	 db = mongo.db('42.96.138.99:27017/meirimeinv?auto_reconnect');
 
 module.exports = ranking = {
 		
-		_ranking : {},
-		
-		add : function (id , score){
-			this._ranking[id] =  score; 
+		insert : function (item){
+			db.collection('ranking').insert(item );
 		},
 		
-		get : function (id){
-			if (this._ranking[id] == null){
-				return 0;
-			}
-			return this._ranking[id];
+		save : function (item){
+			db.collection('ranking').save(item);
 		},
 		
-		top : function (){
-			
-			var newArray = [];
-			_.each(this._ranking , function (value , key){
-				newArray.push(value);
+		get : function (id , callback){
+			db.collection('ranking').findOne({uid : id},function (err, items) {
+				callback(items);
 			});
-			return  newArray.sort(function (a,b){ if(a<b) return 1 ;else return -1;});
+		},
+		
+		top : function (limit , callback){
+			db.collection('ranking').find({},{limit:limit,sort:[['score',-1]]}).toArray(function (err, items) {
+				db.collection('ranking').count(function (err , count){
+					callback(items , count);
+				});
+			});
 		}
 		
 }
