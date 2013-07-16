@@ -9,7 +9,7 @@
 
 4 有机器人功能 
 
-<img
+![qrcode: webot-test](https://raw.github.com/caihuiji/webot-example/master/weixin.jpg)
 
 
 
