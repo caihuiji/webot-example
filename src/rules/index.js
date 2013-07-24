@@ -251,11 +251,6 @@ module.exports = exports = function(webot){
 		             {title:"第四卷：命逝篇(完结篇)"  , pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uWSeR5Ap6iamXTACdEDKCQibR7LmIVNJeQcCGtuhqgUChzw/0' , url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000091&itemidx=1&sign=69a9aa534844161bad0186f8fc0573ab'},
 		             {title:"龚玥菲-经典写真"  , pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uWSeR5Ap6iamXTACdEDKCQibR7LmIVNJeQcCGtuhqgUChzw/0' , url:'http://pan.baidu.com/share/link?shareid=772994612&uk=4080056354'}
 		             ];
-		  http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000130&itemidx=1&sign=5f726758a69306ead06104e7bfc6f78d
-		  http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000124&itemidx=1&sign=cfdd5410033769690693a2c75957d5cf
-		  http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000121&itemidx=1&sign=3800478c1c2e0ecad3233446f2aac912
-	      http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000118&itemidx=1&sign=9ea833dd5ca38f1176eeedf606d210df
-		  http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000115&itemidx=1&sign=5494b2aed73edc1d6ebe7a2418ed72a1
 	  } else if(/张馨予/gi.test(info.text)){
 		  message = [
 		             {title:"你尽然知道这个东西，给你"	, description :"张馨予系列写真" ,pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uXj9DlBqZ7mD5QzicTTjrXL5WSvJIYhRPFgJeVwMgq89kw/0',url:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uXj9DlBqZ7mD5QzicTTjrXL5WSvJIYhRPFgJeVwMgq89kw/0' },
