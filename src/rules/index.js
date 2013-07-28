@@ -262,7 +262,7 @@ module.exports = exports = function(webot){
 		             {title:"全部打包下载"  				, pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uWDpeWBC57DfDWAh0PvYoCnV27WYlnicibRLN0cVibgv3SlA/0' , url:'http://t.cn/zQf84Ft'}
 		             ];
 	  }else if (/求图/gi.test(info.text)){
-		  message = '(各种经典截图的种子)  http://t.cn/zQxDfKr';
+		  message = '(各种经典截图的种子)  http://t.cn/zQaNS89';
 	  }  else if (subject.contain(info.text)) {
 		  message = "嗯... 这是好东西啊，你过一段时间再来找我，应该就有了。";
 	  }  else {
