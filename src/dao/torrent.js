@@ -22,6 +22,7 @@ module.exports = torrent = {
 			'泷泽萝拉'	: 'http://t.cn/zQUZ854',
 			'濑亚美莉'	: 'http://t.cn/zQUZgvF',
 			'天海翼'	: 'http://t.cn/zQUZphT',
-			'柚木提娜'	: 'http://t.cn/zQUZvNq'
+			'柚木提娜'	: 'http://t.cn/zQUZvNq',
+			'求图(各种经典截图的种子)'	: 'http://t.cn/zQxDfKr'
 		}
 }
