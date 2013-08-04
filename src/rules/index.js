@@ -331,7 +331,7 @@ module.exports = exports = function(webot){
 	  pattern : '/.*/',
 	  handler : function (info){
 		  log.info(info.uid +" comment a = " + info.text);
-		  return "我太笨了，不能理解你的意思。\n你可以回复“1”求问大湿，也许大湿能解决你的问题。";
+		  return "我太笨了，不能理解你的意思。\n你可以回复“1”求问大湿，也许大湿能解决你的问题。\n或则回复"5"查看说明";
 	  }
   });
   
