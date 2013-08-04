@@ -261,15 +261,13 @@ module.exports = exports = function(webot){
 		             {title:"张馨予系列写真 - 艳照门"  	, pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uVqjbbcVZuHLnq9kTzSgZjEPZ10hsPQlW2wWOyvhTuibNw/0' , url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000130&itemidx=1&sign=5f726758a69306ead06104e7bfc6f78d'},
 		             {title:"全部打包下载"  				, pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uWDpeWBC57DfDWAh0PvYoCnV27WYlnicibRLN0cVibgv3SlA/0' , url:'http://t.cn/zQf84Ft'}
 		             ];
-	  }else if (/求图/gi.test(info.text)){
+	  }else if (/求经典/gi.test(info.text)){
 		  message = '(各种经典截图的种子)  http://t.cn/zQaNS89';
-	  }  else if (subject.contain(info.text)) {
-		  message = "嗯... 这是好东西啊，你过一段时间再来找我，应该就有了。";
-	  }  else {
+	  }else {
 		  log.info(info.uid +" can not answer in dashi = " + info.text );
 		  info.flag = true;
-		  var girl = subject.next([]);
-		  message =   { title:'老衲愚昧',description : "介绍个女优给你认识吧，这个的叫"+ girl.name,pic: girl.url, url: viewImage + girl.url};
+		  var newValue = _.map(torrent.list() , function(value , key){ return key}).join(",")
+		  message = "老衲愚钝，要不你问问一下的问题:\n（龚玥菲,张馨予," + newValue +")";
 		 // message =  "你所问的东西，老衲也不知，不过老衲学习一下下次再告诉你，你还有什么问的吗？";
 	  }
 	  
