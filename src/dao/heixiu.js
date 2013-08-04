@@ -1,6 +1,6 @@
 var _ = require('underscore')._;
 
-var heixiu = module.exports = function (setting){
+var heixu = module.exports = function (setting){
 	_.extend(this ,{
 		_userId : null,
 		
@@ -24,7 +24,7 @@ var heixiu = module.exports = function (setting){
 	
 };
 
-heixiu.prototype = {
+heixu.prototype = {
 		
 		
 		/**
@@ -185,37 +185,36 @@ heixiu.prototype = {
 		 */
 		
 		_subjects : [
-		 	       {name :'中西里菜' ,	url	: 'http://www.imama360.com/heixiu/1375592077965.jpg'},
-		 	        {name :'香坂百合' ,	url	: 'http://www.imama360.com/heixiu/1375592078009.jpg'},
-		 	        {name :'张优' ,	url	: 'http://www.imama360.com/heixiu/1375592078040.jpg'},
-		 	        {name :'小川亚沙美' ,url	: 'http://www.imama360.com/heixiu/1375592078087.jpg'},
-		 	        {name :'白咲舞' ,	url	: 'http://www.imama360.com/heixiu/1375592078148.jpg'} ,
-		 	        {name :'希崎杰西卡' ,url	: 'http://www.imama360.com/heixiu/1375592078278.jpg'},
-		 	        {name :'泷泽优奈' ,	url	: 'http://www.imama360.com/heixiu/1375592078331.jpg'},
-		 	        {name :'乙井' ,	url	: 'http://www.imama360.com/heixiu/1375592078396.jpg'},
-		 	        {name :'横山美雪' ,	url	: 'http://www.imama360.com/heixiu/1375592078422.jpg'},
-		 	        {name :'内海直子' ,	url	: 'http://www.imama360.com/heixiu/1375592078460.jpg'},
-		 	        {name :'西山希' ,	url	: 'http://www.imama360.com/heixiu/1375592078509.jpg'},
-		 	        {name :'美遥' ,	url	:'http://www.imama360.com/heixiu/1375592078558.jpg'},
-		 	        {name :'并木优' ,	url	: 'http://www.imama360.com/heixiu/1375592078601.jpg'},
-		 	        {name :'羽月希' ,	url	: 'http://www.imama360.com/heixiu/1375592078646.jpg'},
-		 	        {name :'松野唯' ,	url	: 'http://www.imama360.com/heixiu/1375592078697.jpg'},
-		 	        {name :'西野翔' ,	url	: 'http://www.imama360.com/heixiu/1375592078728.jpg'},
-		 	        {name :'椎名由奈' ,	url	: 'http://www.imama360.com/heixiu/1375592078786.jpg'},
-		 	        {name :'有村千佳' ,	url	: 'http://www.imama360.com/heixiu/1375592078836.jpg'},
-		 	        {name :'仁科百华' ,	url	: 'http://www.imama360.com/heixiu/1375592078878.jpg'},
-		 	        {name :'香澄乃亚日' ,url	: 'http://www.imama360.com/heixiu/1375592078923.jpg'}  ,
-		 	        
-		 	        {name :'友田彩也香' ,url	: 'http://www.imama360.com/heixiu/1375592078969.jpg'},
-		 	        {name :'里美尤利娅' ,url	: 'http://www.imama360.com/heixiu/1375592079109.jpg'},
-		 	        {name :'爱沢有纱' ,	url	: 'http://www.imama360.com/heixiu/1375592079304.jpg'},
-		 	        {name :'雨宫琴音' ,	url	: 'http://www.imama360.com/heixiu/1375592079535.jpg'},
-		 	        {name :'李小冉' ,	url	: 'http://www.imama360.com/heixiu/1375592079745.jpg'},
-		 	        {name :'徐若瑄' ,	url	: 'http://www.imama360.com/heixiu/1375592079834.jpg'},
-		 	        {name :'郭碧婷' ,	url	: 'http://www.imama360.com/heixiu/1375592080696.jpg'},
-		 	        {name :'金泰希' ,	url	: 'http://www.imama360.com/heixiu/1375592081006.jpg'},
-		 	        {name :'宋慧乔' ,	url	: 'http://www.imama360.com/heixiu/1375592081207.jpg'},
-		 	        {name :'朴妮唛' ,	url	: 'http://www.imama360.com/heixiu/1375592081557.jpg'}
+		 	       {name :'中西里菜' ,	url	: 'http://www.imama360.com/heixu/1375592077965.jpg'},
+		 	        {name :'香坂百合' ,	url	: 'http://www.imama360.com/heixu/1375592078009.jpg'},
+		 	        {name :'张优' ,	url	: 'http://www.imama360.com/heixu/1375592078040.jpg'},
+		 	        {name :'小川亚沙美' ,url	: 'http://www.imama360.com/heixu/1375592078087.jpg'},
+		 	        {name :'白咲舞' ,	url	: 'http://www.imama360.com/heixu/1375592078148.jpg'} ,
+		 	        {name :'希崎杰西卡' ,url	: 'http://www.imama360.com/heixu/1375592078278.jpg'},
+		 	        {name :'泷泽优奈' ,	url	: 'http://www.imama360.com/heixu/1375592078331.jpg'},
+		 	        {name :'乙井' ,	url	: 'http://www.imama360.com/heixu/1375592078396.jpg'},
+		 	        {name :'横山美雪' ,	url	: 'http://www.imama360.com/heixu/1375592078422.jpg'},
+		 	        {name :'内海直子' ,	url	: 'http://www.imama360.com/heixu/1375592078460.jpg'},
+		 	        {name :'西山希' ,	url	: 'http://www.imama360.com/heixu/1375592078509.jpg'},
+		 	        {name :'美遥' ,	url	:'http://www.imama360.com/heixu/1375592078558.jpg'},
+		 	        {name :'并木优' ,	url	: 'http://www.imama360.com/heixu/1375592078601.jpg'},
+		 	        {name :'羽月希' ,	url	: 'http://www.imama360.com/heixu/1375592078646.jpg'},
+		 	        {name :'松野唯' ,	url	: 'http://www.imama360.com/heixu/1375592078697.jpg'},
+		 	        {name :'西野翔' ,	url	: 'http://www.imama360.com/heixu/1375592078728.jpg'},
+		 	        {name :'椎名由奈' ,	url	: 'http://www.imama360.com/heixu/1375592078786.jpg'},
+		 	        {name :'有村千佳' ,	url	: 'http://www.imama360.com/heixu/1375592078836.jpg'},
+		 	        {name :'仁科百华' ,	url	: 'http://www.imama360.com/heixu/1375592078878.jpg'},
+		 	        {name :'香澄乃亚日' ,url	: 'http://www.imama360.com/heixu/1375592078923.jpg'} ,
+		 	        {name :'友田彩也香' ,url	: 'http://www.imama360.com/heixu/1375592078969.jpg'},
+		 	        {name :'里美尤利娅' ,url	: 'http://www.imama360.com/heixu/1375592079109.jpg'},
+		 	        {name :'爱沢有纱' ,	url	: 'http://www.imama360.com/heixu/1375592079304.jpg'},
+		 	        {name :'雨宫琴音' ,	url	: 'http://www.imama360.com/heixu/1375592079535.jpg'},
+		 	        {name :'李小冉' ,	url	: 'http://www.imama360.com/heixu/1375592079745.jpg'},
+		 	        {name :'徐若瑄' ,	url	: 'http://www.imama360.com/heixu/1375592079834.jpg'},
+		 	        {name :'郭碧婷' ,	url	: 'http://www.imama360.com/heixu/1375592080696.jpg'},
+		 	        {name :'金泰希' ,	url	: 'http://www.imama360.com/heixu/1375592081006.jpg'},
+		 	        {name :'宋慧乔' ,	url	: 'http://www.imama360.com/heixu/1375592081207.jpg'},
+		 	        {name :'朴妮唛' ,	url	: 'http://www.imama360.com/heixu/1375592081557.jpg'}
 		 		],
 		 		
 		 _confusionSubject : [
