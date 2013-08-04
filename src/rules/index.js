@@ -19,7 +19,7 @@ module.exports = exports = function(webot){
 	
   webot.set("subscribe" , {
 	  pattern: function(info) {
-		  if((info.is('event') && info.param.event === 'subscribe')   || info.text === '4'){
+		  if((info.is('event') && info.param.event === 'subscribe')   || info.text === '5'){
 			  return true;
 		  }
 	      return false; 
@@ -27,10 +27,11 @@ module.exports = exports = function(webot){
 	   handler: function(info){
 		   log.info(info.uid +" subscribed ");
 	        return 	"嘿嘿~ 健康生活就要开始咯！每天睡觉前，看看美女，梦会很美哦!!\n"+
-	        		"1 回复“1” - 查看互动类答题模式\n"+
-	        		"2 回复“2” - 查看大湿模式 \n"+
-	        		"3 回复“3” - 查看答题TOP 5 \n"+
-			        "4 回复“4” - 查看说明";
+	        		"1 回复“1” - 求问大湿(种子) \n"+
+	        		"2 回复“2” - 查看互动类答题模式\n"+
+	        		"3 回复“3” - 查看答题TOP 10 \n"+
+	        		"4 回复“4” - 自拍美女随便看 \n"+
+			        "5 回复“5” - 查看说明";
 	     }
   });
   
@@ -45,7 +46,7 @@ module.exports = exports = function(webot){
 /**********    lashangchuanglian    or  qiangshengjianti  ***************/
   
   
-  webot.set('lashangchuanglian', {
+ /* webot.set('lashangchuanglian', {
 	  pattern : '/^(1)|(拉上窗帘)$/',
 	  handler : function (info){
 		  log.info(info.uid +" request text=拉上窗帘  ");
@@ -53,7 +54,7 @@ module.exports = exports = function(webot){
 		             {title: '大湿来告诉你', description: '大湿回复的内容为总网友期望指数最高的内容，详情查看更新列表，持续更新中...', pic: 'http://www.imama360.com/images/dashi.jpg', url: 'http://www.imama360.com/material/dashi.html'}
 		          ];
 	  }
-  });
+  });*/
   
   webot.set('qiangshengjianti', {
 	  pattern : '/^(2)|(强身健体)$/',
@@ -65,6 +66,8 @@ module.exports = exports = function(webot){
 	  }
   });
   
+
+  
   webot.set('top', {
 	  pattern : '/^3$/',
 	  handler : function (info , next){
@@ -73,28 +76,31 @@ module.exports = exports = function(webot){
 		  
 		  ranking.top(10 , function (items , total){
 			  var max = 9,
-			  	  content = '嘿咻"英雄版 TOP 10 \n';
+			  	  content = '嘿咻"英雄版(第二季) TOP 10 \n';
 			  for(var i = 0 ;  i < items.length ; i++){
 				  if(i > max){
 					  break;
 				  }
 				  content += '第'+(i+1)+'名:' + items[i].score +"题 \n";
 			  }
-			  next(null ,   content += '目前已有' + (100 + total) + "人参与。");
+			  next(null ,   content += '总共有' + (100 + total) + "人玩过嘿咻。");
 		  });
 	  }
   });
   
   
   
-  
-  
+  webot.set('4', {
+	  pattern : '/^4$/',
+	  handler : function (info){
+		  log.info(info.uid +" request text=强身健体  ");
+		  return "自拍美女随便看! \n绝对干货! \n不怕女友老婆叼你，就打开：\n http://t.cn/zQowGg7";
+	  }
+  });  
   
   
   
 /************      答题       *************/
-  
-  
 
   
   function  generatePic (index, subject){
@@ -215,7 +221,13 @@ module.exports = exports = function(webot){
   });
   
   
-/************      答题       *************/  
+/************      大湿       *************/ 
+  
+  function getDashiDetail(){
+	  var newValue = _.map(torrent.list() , function(value , key){ return key}).join(",");
+	  message = "(龚玥菲,张馨予," + newValue +")";
+	  return message;
+  }
   
   webot.waitRule("dashi",function (info ){
 	  
@@ -266,8 +278,7 @@ module.exports = exports = function(webot){
 	  }else {
 		  log.info(info.uid +" can not answer in dashi = " + info.text );
 		  info.flag = true;
-		  var newValue = _.map(torrent.list() , function(value , key){ return key}).join(",")
-		  message = "老衲愚钝，要不你问问一下的问题:\n（龚玥菲,张馨予," + newValue +")";
+		  message = "老衲愚昧，目前的存货只有这些(请输入对应的名字):\n"+getDashiDetail();
 		 // message =  "你所问的东西，老衲也不知，不过老衲学习一下下次再告诉你，你还有什么问的吗？";
 	  }
 	  
@@ -281,12 +292,12 @@ module.exports = exports = function(webot){
   })
   
   webot.set("dashi",{
-	  pattern : '/^大湿$/',
+	  pattern : '/^(大湿|1|拉上窗帘)$/',
 	  handler : function (info){
 		  log.info(info.uid +" request text=大湿  and enter the mode of dashi");
 		  info.session.dashi =   new Date().getTime() ;
 		  info.wait("dashi");
-		  return "说出你想要的吧，老衲尽可能满足你的欲望。";
+		  return "说出你想要的吧，老衲尽可能满足你的欲望。\n为师的存货如下(请输入对应的名字):" + getDashiDetail();
 	  }
   });
   
@@ -316,12 +327,11 @@ module.exports = exports = function(webot){
 	  }
   });
   
-  /* 打分 **/
   webot.set("last",{
 	  pattern : '/.*/',
 	  handler : function (info){
 		  log.info(info.uid +" comment a = " + info.text);
-		  return "我太笨了，不能理解你的意思。你可以回复“1”查看大湿模式，也许大湿能解决你的问题。";
+		  return "我太笨了，不能理解你的意思。\n你可以回复“1”求问大湿，也许大湿能解决你的问题。";
 	  }
   });
   

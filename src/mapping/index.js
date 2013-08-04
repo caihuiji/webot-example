@@ -28,6 +28,10 @@ module.exports = exports = function(app){
 		res.render("material/heixiu.html");
 	});
 	
+	app.get('/zipai/index.html', function(req, res){
+		res.render("zipai/index.html");
+	});
+	
 	app.get('/material/viewImage.html', function(req, res){
 		res.render("material/viewImage.html" ,{
 			imageurl:req.query.imageurl
