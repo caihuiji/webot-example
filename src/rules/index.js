@@ -224,8 +224,8 @@ module.exports = exports = function(webot){
 /************      大湿       *************/ 
   
   function getDashiDetail(){
-	  var newValue = _.map(torrent.list() , function(value , key){ return key}).join(",");
-	  message = "(龚玥菲,张馨予," + newValue +")";
+	  var newValue = _.map(torrent.list() , function(value , key){ return key}).join(" \n");
+	  message = "龚玥菲 \n张馨予 \n" + newValue +"";
 	  return message;
   }
   
@@ -297,7 +297,7 @@ module.exports = exports = function(webot){
 		  log.info(info.uid +" request text=大湿  and enter the mode of dashi");
 		  info.session.dashi =   new Date().getTime() ;
 		  info.wait("dashi");
-		  return "说出你想要的吧，老衲尽可能满足你的欲望。\n为师的存货如下(请输入对应的名字):" + getDashiDetail();
+		  return "说出你想要的吧，老衲尽可能满足你的欲望。\n为师的存货如下(请输入对应的名字):\n" + getDashiDetail();
 	  }
   });
   
