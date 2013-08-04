@@ -8,14 +8,40 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="format-detection" content="telephone=no">
 <title>自拍美女随便看</title>
+<style type="text/css" >
+img {
+width:100%;
+}
+
+.image-wrapper {
+	margin: 10px 0;
+}
+
+.hidden , .hidden * {
+	display :none;
+}
+</style>
 </head>
 <body>
-对不起，该功能升级中...
+<h3>自拍美女随便看。每20分钟更新一个。</h3>
+
+<% for(var i = 0 ; i < 20 ; i++){ %>
+<div class="image-wrapper"><img alt="" src="<%=imageArray[i] %>"/></div>
+<% } %>
+
+
 
 <div style="display:none;">
+
 <script type="text/javascript">
 var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
 document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F6c3ed0c2bf40a96e2da01a5ad34be1e6' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript" src="http://lib.sinaapp.com/js/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function (){
+		
+	});
 </script>
 </div>
 </body>
