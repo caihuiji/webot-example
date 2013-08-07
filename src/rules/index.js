@@ -76,14 +76,21 @@ module.exports = exports = function(webot){
 		  
 		  ranking.top(10 , function (items , total){
 			  var max = 9,
-			  	  content = '嘿咻"英雄版(第二季) TOP 10 \n';
+			  	  content = '嘿咻"(第二季) TOP 10 \n',
+			  	  size = new HeixiuService().size();
 			  for(var i = 0 ;  i < items.length ; i++){
 				  if(i > max){
 					  break;
 				  }
-				  content += '第'+(i+1)+'名:' + items[i].score +"题 \n";
+				  content += '第'+(i+1)+'名:' + items[i].score +"题"+
+				  			( size === items[i].score ? '(通关)\n':'\n');
 			  }
-			  next(null ,   content += '总共有' + (100 + total) + "人玩过嘿咻。");
+			  ranking.get(info.uid , function (item){
+				  content += '总共有' + (100 + total) + "人玩过嘿咻。\n";
+				  content += '您答对的题数：' + (item == null ? 0  : item.score) + "题。";
+				  next(null ,   content);
+			  });
+			 
 		  });
 	  }
   });
@@ -103,7 +110,7 @@ module.exports = exports = function(webot){
 /************      答题       *************/
 
   
-  function  generatePic (index, subject){
+  function  generatePic (index, subject , size){
 	  var description  = "";
 	  
 	  _.each(subject.questions,function ( value , key){
@@ -111,7 +118,7 @@ module.exports = exports = function(webot){
 	  });
 	  return  { 
 		  		title: index +'号：帅锅，觉得我咋样啊，知道我的名字吗？',
-		  		description : description + '(提示:回复 “振动器” 跳过此道题)',
+		  		description : description + '(提示:回复 “振动器” 跳过此道题;点击标题查看大图;总共'+size+'题)',
 		  		pic: subject.subject.url,
 		  		url:   viewImage + subject.subject.url
 		  		};
@@ -146,7 +153,7 @@ module.exports = exports = function(webot){
 		  heixiuService.help(function (status ,obj){
 			  if( status === true){
 				  ++score;
-				  next (null, generatePic(obj.index , obj.subject));
+				  next (null, generatePic(obj.index , obj.subject , heixiuService.size()));
 			  }else {
 				  next(null , "振动器已经用过了，那个女优还在那里爽。");
 			  }
@@ -158,7 +165,7 @@ module.exports = exports = function(webot){
 	  default:
 		  heixiuService.nextSubject(info.text , function (status ,obj){
 			  if( status === true){
-				  next (null, generatePic(obj.index , obj.subject));
+				  next (null, generatePic(obj.index , obj.subject , heixiuService.size()));
 				  ++score;
 				  info.session.heixiu = {  time :  new Date().getTime(),  heixiuService : heixiuService , score : score} ;
 				  info.rewait();
@@ -213,7 +220,7 @@ module.exports = exports = function(webot){
 					  score : 0
 			  } ;
 			 info.wait("heixiu");
-			 next (null , generatePic(obj.index , obj.subject));
+			 next (null , generatePic(obj.index , obj.subject , heixiuService.size()));
 		 });
 		 
 		

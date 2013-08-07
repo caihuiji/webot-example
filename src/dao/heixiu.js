@@ -89,8 +89,8 @@ heixu.prototype = {
 			this.nextSubject(null , callback);
 		},
 		
-		totalScore: function ( callback){
-			
+		size: function ( callback){
+			return this._subjects.length;
 		},
 		
 		getModel : function (){
