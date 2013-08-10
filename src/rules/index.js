@@ -7,8 +7,9 @@ var crypto = require('crypto'),
 	torrent = require('../dao/torrent'),
 	HeixiuService  = require("../dao/heixiu"),
 	ranking  = require("../dao/ranking"),
+	mail  = require("../dao/mail");
 
-/**
+/**1
  * 初始化路由规则
  */
 module.exports = exports = function(webot){
@@ -26,12 +27,14 @@ module.exports = exports = function(webot){
 	    },
 	   handler: function(info){
 		   log.info(info.uid +" subscribed ");
+		   
 	        return 	"嘿嘿~ 健康生活就要开始咯！每天睡觉前，看看美女，梦会很美哦!!\n"+
 	        		"1 回复“1” - 求问大湿(种子) \n"+
 	        		"2 回复“2” - 查看互动类答题模式\n"+
 	        		"3 回复“3” - 查看答题TOP 10 \n"+
 	        		"4 回复“4” - 自拍美女随便看 \n"+
-			        "5 回复“5” - 查看说明";
+			        "5 回复“5” - 查看说明\n"+
+			        "6 回复“6” - 绑定邮箱(接收种子)";
 	     }
   });
   
@@ -232,16 +235,16 @@ module.exports = exports = function(webot){
   
   function getDashiDetail(){
 	  var newValue = _.map(torrent.list() , function(value , key){ return key}).join(" \n");
-	  message = "龚玥菲 \n张馨予 \n" + newValue +"";
-	  return message;
+	  return newValue;
   }
   
-  webot.waitRule("dashi",function (info ){
+  webot.waitRule("dashi",function (info , next){
 	  
 	  log.info(info.uid +" request text="+info.text );
 	  
 	  if(new Date().getTime() - info.session.dashi  >= 300000){
 		  log.info(info.uid +" session time out " );
+		  next(null , null);
 		  return ;
 	  }
 	  
@@ -253,40 +256,25 @@ module.exports = exports = function(webot){
 	  if(exit){
 		  log.info(info.uid +" exit mode of dashi and message = "+ exit );
 		  delete info.session.dashi;
-		  return exit;
+		  next(null , exit);
+		  return ;
 	  }
 	  
 	  var data = torrent.findByName(info.text) ;
 	  // 搜索列表
 	  if(data){
-		  message =  data.url + "\n(友情提示：使用电脑输入链接下载。)";
+		  message =  data.url ;
 		  log.info(info.uid +" answer in dashi = " + info.text );
-	  } else if (/(龚玥菲)|(金瓶梅)/gi.test(info.text)){
-		  message = [
-		             {title:"你尽然知道这个东西，给你" ,description :"<新金瓶梅> - 2013 年上映，高清种子或则征求中。。" ,pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uW18P7ViaD7jmGqAIUzw5a6g7cAficYjbG5r3F9IFok0XFA/0',url:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uW18P7ViaD7jmGqAIUzw5a6g7cAficYjbG5r3F9IFok0XFA/0' },
-		             {title:"第一卷：命惑篇"   ,  pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uVN6Cg7j3wGJb86VckFOzet4nSRzR1j7FFibwvq7g0NEicQ/0',url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000059&itemidx=1&sign=9f59114ce6a28f9e50ae73ae4aaeddbd' },
-		             {title:"第二卷：色劫篇"  ,  pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uVloYPpKl6sXNRWt09tLibibl0SEM3KiaOzrQicYVtbNwvoHg/0',url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000062&itemidx=1&sign=f2e3d238fdadb7f9e5641a62658b6e08' },
-		             {title:"第三卷：情乱篇"  , pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uW18P7ViaD7jmGqAIUzw5a6gH2F8HRib4qG1icJIbsYictvdQ/0' , url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000088&itemidx=1&sign=dd8158b6717754350cc019c5b362bbf5'},
-		             {title:"第四卷：命逝篇(完结篇)"  , pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uWSeR5Ap6iamXTACdEDKCQibR7LmIVNJeQcCGtuhqgUChzw/0' , url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000091&itemidx=1&sign=69a9aa534844161bad0186f8fc0573ab'},
-		             {title:"龚玥菲-经典写真"  , pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uWSeR5Ap6iamXTACdEDKCQibR7LmIVNJeQcCGtuhqgUChzw/0' , url:'http://pan.baidu.com/share/link?shareid=772994612&uk=4080056354'}
-		             ];
-	  } else if(/张馨予/gi.test(info.text)){
-		  message = [
-		             {title:"你尽然知道这个东西，给你"	, description :"张馨予系列写真" ,pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uXj9DlBqZ7mD5QzicTTjrXL5WSvJIYhRPFgJeVwMgq89kw/0',url:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uXj9DlBqZ7mD5QzicTTjrXL5WSvJIYhRPFgJeVwMgq89kw/0' },
-		             {title:"张馨予系列写真 - 出水"  		, pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uXj9DlBqZ7mD5QzicTTjrXL5MYicIy77Ahy6jpricLfZicHVA/0' , url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000115&itemidx=1&sign=5494b2aed73edc1d6ebe7a2418ed72a1'},
-		             {title:"张馨予系列写真 - 僵尸护士" 	, pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uVWBibexBibElnjCGTiclkiafQ5BbhuOrYDQ1tZbyUiaeibGPWg/0' , url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000118&itemidx=1&sign=9ea833dd5ca38f1176eeedf606d210df'},
-		             {title:"张馨予系列写真 - 沐浴" 		, pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uUa4g5KyZFiaTc3psuiawT3qPAMwicvu6CVicZujbCsEB11Fg/0' , url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000121&itemidx=1&sign=3800478c1c2e0ecad3233446f2aac912'},
-		             {title:"张馨予系列写真 - 天使"  		, pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uWDpeWBC57DfDWAh0PvYoCnichA9WojI80lal5nNXhjNIg/0' , url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000124&itemidx=1&sign=cfdd5410033769690693a2c75957d5cf'},
-		             {title:"张馨予系列写真 - 艳照门"  	, pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uVqjbbcVZuHLnq9kTzSgZjEPZ10hsPQlW2wWOyvhTuibNw/0' , url:'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MDA2ODE2MQ==&appmsgid=10000130&itemidx=1&sign=5f726758a69306ead06104e7bfc6f78d'},
-		             {title:"全部打包下载"  				, pic:'http://mmsns.qpic.cn/mmsns/PyhdkQrt6uWDpeWBC57DfDWAh0PvYoCnV27WYlnicibRLN0cVibgv3SlA/0' , url:'http://t.cn/zQf84Ft'}
-		             ];
-	  }else if (/求经典/gi.test(info.text)){
+	  } else if (/求经典/gi.test(info.text)){
 		  message = '(各种经典截图的种子)  http://t.cn/zQaNS89';
-	  }else {
+	  }else if (/^6$/gi.test(info.text)){
+		  webot.get('mail').handler(info,next);
+		  return ;
+	  } else {
 		  log.info(info.uid +" can not answer in dashi = " + info.text );
 		  info.flag = true;
-		  message = "老衲愚昧，目前的存货只有这些(请输入对应的名字):\n"+getDashiDetail();
-		 // message =  "你所问的东西，老衲也不知，不过老衲学习一下下次再告诉你，你还有什么问的吗？";
+		  next(null , "老衲愚昧，目前的存货只有这些(请输入对应的名字):\n"+getDashiDetail());
+		  return ;
 	  }
 	  
 	  info.session.dashi = new Date().getTime();
@@ -295,7 +283,33 @@ module.exports = exports = function(webot){
 	  log.info(info.uid +" response message = "+ message );
 	  
 	  
-	  return message; 
+	  mail.getMail(info.uid , function (err , item){
+		  
+		  if(item == null || item.mail === ''){
+			  next(null , message + '\n你尚未绑定邮箱,绑定后地址直接发到你邮箱里,可回复"6"进行绑定。'); 
+			  return ;
+		  }
+		  
+		  if(item.today === getToday() && item.torrentTimes >= 3){
+			  next(null , '对不起，每天只能获得3个种子。');
+			  return ;
+		  }
+		  if(item.today !== getToday()){
+			  item.today = getToday();
+			  item.torrentTimes = 0;
+			  item.verifyTimes = 0;
+		  }
+		  
+		  item.torrentTimes ++ ;
+		  mail.save(item);
+		  
+		  setTimeout(function (){
+			  mail.sendMail ({to : item.mail , subject :  data.name + ' - 礼包' , body : '地址:<a target="_blank" href="'+data.url+'">'+data.url+'</a>' });
+		  },0);
+		  next(null , message + '\n已发送到您邮箱。'); 
+		  
+	  }) ;
+	  
   })
   
   webot.set("dashi",{
@@ -308,31 +322,79 @@ module.exports = exports = function(webot){
 	  }
   });
   
-  webot.set("dashi",{
+  webot.set("dashi1",{
 	  pattern : '/^大师$/',
 	  handler : "是大湿，不是大师。你这是在侮辱我吗？"
   });
   
   
-  webot.set("help",{
-	  pattern : '/^help.*$/',
-	  handler : function (info){
-		  log.info(info.uid +" comment help = " + info.text);
-		  info.flag = true;
-		  return "感谢你对我们提出的宝贵意见，希望你撸得愉快。";
-	  }
+  /***   邮箱  **********/
+  
+  webot.waitRule("bindEmail",function (info , next ){
+	  log.info(info.uid +" request text="+info.text );
+		  
+		  if(new Date().getTime() - info.session.email.time  >= 60000){
+			  log.info(info.uid +" session time out " );
+			  next(null ,null );
+			  return ;
+		  }
+		  
+		  
+		  if(info.text === '#'){
+			  mail.getMail (info.uid , function (err, item){
+				  if(item.today === getToday() && item.verifyTimes >= 3){
+					  next(null , '对不起，每天只能修改3次邮箱。');
+					  return ;
+				  }
+				  if(item.today !== getToday()){
+					  item.today = getToday();
+					  item.verifyTimes = 0;
+					  item.torrentTimes = 0;
+				  }
+				  item.mail =  info.session.email.email;
+				  item.verifyTimes ++ ;
+				  mail.save(item);
+				  next(null , '保存成功，邮箱验证已发送到的邮箱，请注意查收。');
+				  mail.sendMail({  to : item.mail , subject : '每日美女' ,  body : "验证通过。" });
+			  });
+			  return ;
+		  }else if (info.text === '*') {
+			  delete info.session.email;
+			  next(null , "已退出。");
+			  return ;
+		  }
+		  
+		  if (!/^[0-9a-zA-Z]+@(([0-9a-zA-Z]+)[.])+[a-z]{2,4}$/gi.test(info.text)){
+			  next(null , '您输入的邮箱地址有误，如：meirimeinv@qq.com。请重新输入(回复"*"取消)：');
+		  }else {
+			  info.session.email.email = info.text;
+			  next(null , '您输入的邮箱地址是:【'+info.text+'】。\n(回复"#"保存,回复"*"取消, ,重新直接输入)');
+		  }
+		  info.rewait();
+		  info.session.email.time = new Date().getTime();
+	  
   });
   
-  
-  /* 打分 **/
-  webot.set("a",{
-	  pattern : '/^a$/',
-	  handler : function (info){
-		  log.info(info.uid +" comment a = " + info.text);
-		  info.flag = true;
-		  return "感谢您的评价，您的评价是对我们最大的进步。";
+   webot.set("mail" , {
+	  pattern:'/^6$/',
+	  handler : function (info , next){
+		  mail.getMail (info.uid , function (err,item){
+			  var message = "" , email = '';
+			  if(item == null || item.mail === ''){
+				message = '您当前没有设置邮箱。\n请输入您邮箱地址(回复"*"取消):';
+				
+				!item && mail.insert({uid : info.uid , mail : email , verify : false  , today : getToday() , verifyTimes : 0 , torrentTimes : 0 });
+			  }else {
+				  message = '您当前的邮箱：【'+ item.mail +'】。\n请输入您的新邮箱地址(回复"*"取消)：';
+				  email = item.mail ;
+			  }
+			  info.session.email = {time: new Date().getTime() , email :  email};
+			  info.wait("bindEmail");
+			  next(null , message);
+		  })
 	  }
-  });
+   });
+  
   
   webot.set("last",{
 	  pattern : '/.*/',
@@ -341,5 +403,12 @@ module.exports = exports = function(webot){
 		  return "我太笨了，不能理解你的意思。\n你可以回复“1”求问大湿，也许大湿能解决你的问题。\n或则回复“5”查看说明";
 	  }
   });
+  
+  
+  function getToday (){
+	  var date = new Date();
+	  return [date.getFullYear() , date.getMonth() , date.getDay()].join("-");
+  }
+  
   
 }
