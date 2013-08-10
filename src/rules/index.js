@@ -338,7 +338,7 @@ module.exports = exports = function(webot){
 			  next(null ,null );
 			  return ;
 		  }
-		  
+		   
 		  
 		  if(info.text === '#' && /^[0-9a-zA-Z]+@(([0-9a-zA-Z]+)[.])+[a-z]{2,4}$/gi.test(info.session.email.email)){
 			  mail.getMail (info.uid , function (err, item){
