@@ -340,7 +340,7 @@ module.exports = exports = function(webot){
 		  }
 		  
 		  
-		  if(info.text === '#'){
+		  if(info.text === '#' && /^[0-9a-zA-Z]+@(([0-9a-zA-Z]+)[.])+[a-z]{2,4}$/gi.test(info.session.email.email)){
 			  mail.getMail (info.uid , function (err, item){
 				  if(item.today === getToday() && item.verifyTimes >= 3){
 					  next(null , '对不起，每天只能修改3次邮箱。');
@@ -356,16 +356,17 @@ module.exports = exports = function(webot){
 				  mail.save(item);
 				  next(null , '保存成功，邮箱验证已发送到的邮箱，请注意查收。');
 				  mail.sendMail({  to : item.mail , subject : '每日美女' ,  body : "验证通过。" });
+				  
 			  });
 			  return ;
-		  }else if (info.text === '*') {
+		  } if (info.text === '*') {
 			  delete info.session.email;
 			  next(null , "已退出。");
 			  return ;
 		  }
 		  
 		  if (!/^[0-9a-zA-Z]+@(([0-9a-zA-Z]+)[.])+[a-z]{2,4}$/gi.test(info.text)){
-			  next(null , '您输入的邮箱地址有误，如：meirimeinv@qq.com。请重新输入(回复"*"取消)：');
+			  next(null , '您输入的邮箱地址有误，如：meirimeinv@qq.com。\n请重新输入(回复"*"取消)：');
 		  }else {
 			  info.session.email.email = info.text;
 			  next(null , '您输入的邮箱地址是:【'+info.text+'】。\n(回复"#"保存,回复"*"取消, ,重新直接输入)');
