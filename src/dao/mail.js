@@ -1,7 +1,7 @@
 var	 _ = require('underscore')._ ,
 	 email = require('mailer'),
 	 mongo = require('mongoskin'),
-	 db = mongo.db('42.96.138.99:27017/test?auto_reconnect');
+	 db = mongo.db('42.96.138.99:27017/meirimeinv?auto_reconnect');
 
 module.exports = mail = {
 		
