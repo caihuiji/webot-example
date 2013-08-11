@@ -20,7 +20,7 @@ module.exports = mail = {
 		sendMail : function (message , callback){
 			var body = '<div>' + (message.body || "这是一份测试邮件。") +'</div><br/><br/>'+
 						'<div><b style="font-family: \'lucida Grande\', Verdana; line-height: 23px;"><font color="#ff0000">感谢您的关注,如果觉得不错，请推荐给你的好友吧。 </font><b/></div>'+
-						'<div><a href="http://www.imama360.com/" target="_blank"><img src="/cgi-bin/viewfile?f=0C30B02BD5A828EEEF83698EAEBAC61C4738F7816CFAEC5DAEF5FFA8E6F0186E51357BBB2D5D6CE443852FD2F078F38FF92F0FBDB8D4519736A8C8AE0889E116C3FBB95FBB2AA13AC0D36232E3BE7481609A3D3C5FDCDD95E0C4D19B27436ABD&amp;mailid=ZC4304-XY6DcUg5D02zBlkIVIKaC38&amp;sid=AdImm6JeYCInQR5M" filesize="31628"></a></div>';
+						'<div><a href="http://www.imama360.com/" target="_blank"><img src="http://www.imama360.com/images/meirimeinv.jpg" filesize="31628"></a></div>';
 				email.send(
 						{
 					        ssl: true,
