@@ -304,7 +304,11 @@ module.exports = exports = function(webot){
 		  mail.save(item);
 		  
 		  setTimeout(function (){
-			  mail.sendMail ({to : item.mail , subject :  data.name + ' - 礼包' , body : '<a target="_blank" href="'+data.download+'">'+点击进入下载页面+'</a>' });
+			  try{
+			  mail.sendMail ({to : item.mail , subject :  data.name + ' - 礼包' , body : '<a target="_blank" href="'+data.download+'">点击进入下载页面</a>' });
+			  }catch(e){
+				  console.log("发送失败");
+			  }
 		  },0);
 		  next(null , message + '\n下载地址已发送到您邮箱。'); 
 		  
