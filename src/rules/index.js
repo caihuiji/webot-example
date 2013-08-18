@@ -234,7 +234,7 @@ module.exports = exports = function(webot){
 /************      大湿       *************/ 
   
   function getDashiDetail(){
-	  var newValue = _.map(torrent.list() , function(value , key){ return key}).join(" , ");
+	  var newValue = _.map(torrent.list() , function(value , key){ return key}).join("\n");
 	  return newValue;
   }
   
@@ -315,11 +315,10 @@ module.exports = exports = function(webot){
   webot.set("dashi",{
 	  pattern : '/^(大湿|1|拉上窗帘)$/',
 	  handler : function (info){
-		  console.log(info.uid +" request text=大湿  and enter the mode of dashi" + getDashiDetail());
 		  log.info(info.uid +" request text=大湿  and enter the mode of dashi");
 		  info.session.dashi =   new Date().getTime() ;
 		  info.wait("dashi");
-		  return "为师的存货如下(请输入对应的名字):\n" + getDashiDetail();
+		  return "美女写真大放松，为师的存货如下(请输入对应的名字):\n" + getDashiDetail();
 	  }
   });
   
