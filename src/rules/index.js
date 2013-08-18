@@ -263,7 +263,7 @@ module.exports = exports = function(webot){
 	  var data = torrent.findByName(info.text) ;
 	  // 搜索列表
 	  if(data){
-		  message =  data.url ;
+		  message =  "浏览:"+data.url ;
 		  log.info(info.uid +" answer in dashi = " + info.text );
 	  } else if (/求经典/gi.test(info.text)){
 		  message = '(各种经典截图的种子)  http://t.cn/zQaNS89';
@@ -273,7 +273,7 @@ module.exports = exports = function(webot){
 	  } else {
 		  log.info(info.uid +" can not answer in dashi = " + info.text );
 		  info.flag = true;
-		  next(null , "老衲愚昧，目前的存货只有这些(请输入对应的名字):\n"+getDashiDetail());
+		  next(null , "老衲愚昧，目前的存货只有这些(回复编号发送到你邮箱):\n"+getDashiDetail());
 		  return ;
 	  }
 	  
@@ -306,7 +306,7 @@ module.exports = exports = function(webot){
 		  setTimeout(function (){
 			  mail.sendMail ({to : item.mail , subject :  data.name + ' - 礼包' , body : '地址:<a target="_blank" href="'+data.url+'">'+data.url+'</a>' });
 		  },0);
-		  next(null , message + '\n已发送到您邮箱。'); 
+		  next(null , message + '\n下载地址已发送到您邮箱。'); 
 		  
 	  }) ;
 	  
@@ -318,7 +318,7 @@ module.exports = exports = function(webot){
 		  log.info(info.uid +" request text=大湿  and enter the mode of dashi");
 		  info.session.dashi =   new Date().getTime() ;
 		  info.wait("dashi");
-		  return "美女写真大放松，为师的存货如下(请输入对应的名字):\n" + getDashiDetail();
+		  return "大胸美腰系列写真(回复编号发送到你邮箱):\n" + getDashiDetail();
 	  }
   });
   
