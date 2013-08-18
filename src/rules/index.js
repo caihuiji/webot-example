@@ -250,7 +250,7 @@ module.exports = exports = function(webot){
 	  
 	  var exit = false ;
 	  (new Date().getTime() - info.session.dashi >= 180000) && (exit =  "你想得太久了，大湿撸管去了！");
-	  info.text === '谢谢大湿' &&  ( exit = "老衲已把我毕生所学的东西传授给你了，希望你发扬广大。");
+	  (info.text === '谢谢大湿' || info.text === '*' ) &&  ( exit = "老衲已把我毕生所学的东西传授给你了，希望你发扬广大。");
 	  info.text === '谢谢大师' &&  ( exit = '尼玛，是大湿! 大湿! 大湿! 滚粗。（大湿气愤地走掉）');
 	  
 	  if(exit){
@@ -273,7 +273,7 @@ module.exports = exports = function(webot){
 	  } else {
 		  log.info(info.uid +" can not answer in dashi = " + info.text );
 		  info.flag = true;
-		  next(null , "老衲愚昧，目前的存货只有这些(回复编号发送到你邮箱):\n"+getDashiDetail());
+		  next(null , "老衲愚昧，目前的存货只有这些(回复编号发送到你邮箱,回复'*'退出):\n"+getDashiDetail());
 		  return ;
 	  }
 	  
@@ -322,7 +322,7 @@ module.exports = exports = function(webot){
 		  log.info(info.uid +" request text=大湿  and enter the mode of dashi");
 		  info.session.dashi =   new Date().getTime() ;
 		  info.wait("dashi");
-		  return "大胸美腰系列写真(回复编号发送到你邮箱):\n" + getDashiDetail();
+		  return "大胸美腰系列写真(回复编号发送到你邮箱,回复'*'退出):\n" + getDashiDetail();
 	  }
   });
   
