@@ -34,25 +34,30 @@ module.exports = exports = function(app){
 		var count = 20;
 		var url = 'http://app.image.baidu.com/photos/LOGIC/toplist/get2.php?appname=beautyhuntingandroid&version=2.0.0&channelid=1426h&device=MB860&cuid=B0CB4BA0814D57BCDD5682B45E1C273D%7C934330340846353&uuid=e6dd056a-6559-4819-aa3f-f993d591d4a2&uid=2280138&startid=-1&reqno='+count+'&reqtype=latest_pic'
 		urllib.request(url , function (err, data, request){
-			var jsonData = JSON.parse(data.toString());
-			var dataArray = _.map(jsonData.data ,function (value , key ){
-				return value.image_contsign;
-			});
-			
-			var nowTime  = (new Date().getTime()+"").substring(0,10), 
-				imageUrl = 'http://timg01.baidu-1img.cn/timg?selftimerandroid_head&size=w540&quality=80&appname=selftimerandroid&sec=' + nowTime +"&";
-			
-			var imageArray = [];
-			_.each(dataArray , function (value , key){
-				var  actualImageUrl  = 'http://t10.baidu.com//it/u='+value+'&fm=17';
-				var  shasum = crypto.createHash('MD5');
-					 shasum.update('wisetimgkey' + nowTime + actualImageUrl);
+			try{
+				var jsonData = JSON.parse(data.toString());
+				var dataArray = _.map(jsonData.data ,function (value , key ){
+					return value.image_contsign;
+				});
 				
-			    var newImageUrl = imageUrl + '&di=' +	shasum.digest('hex') +'&src='+actualImageUrl;
+				var nowTime  = (new Date().getTime()+"").substring(0,10), 
+					imageUrl = 'http://timg01.baidu-1img.cn/timg?selftimerandroid_head&size=w540&quality=80&appname=selftimerandroid&sec=' + nowTime +"&";
 				
-				imageArray.push(newImageUrl);
-			});
-			res.render("zipai/index.html" , {imageArray:imageArray });
+				var imageArray = [];
+				_.each(dataArray , function (value , key){
+					var  actualImageUrl  = 'http://t10.baidu.com//it/u='+value+'&fm=17';
+					var  shasum = crypto.createHash('MD5');
+						 shasum.update('wisetimgkey' + nowTime + actualImageUrl);
+					
+				    var newImageUrl = imageUrl + '&di=' +	shasum.digest('hex') +'&src='+actualImageUrl;
+					
+					imageArray.push(newImageUrl);
+				});
+				res.render("zipai/index.html" , {imageArray:imageArray });
+			}catch (e){
+				res.render("zipai/index.html" , {imageArray:[] });
+				console.log(e);
+			}
 		});
 	});
 	
