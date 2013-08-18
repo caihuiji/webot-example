@@ -319,7 +319,7 @@ module.exports = exports = function(webot){
 		  log.info(info.uid +" request text=大湿  and enter the mode of dashi");
 		  info.session.dashi =   new Date().getTime() ;
 		  info.wait("dashi");
-		  return "说出你想要的吧，老衲尽可能满足你的欲望。\n为师的存货如下(请输入对应的名字):\n";
+		  return "为师的存货如下(请输入对应的名字):\n" + getDashiDetail();
 	  }
   });
   
