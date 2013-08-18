@@ -315,6 +315,7 @@ module.exports = exports = function(webot){
   webot.set("dashi",{
 	  pattern : '/^(大湿|1|拉上窗帘)$/',
 	  handler : function (info){
+		  console.log(info.uid +" request text=大湿  and enter the mode of dashi");
 		  log.info(info.uid +" request text=大湿  and enter the mode of dashi");
 		  info.session.dashi =   new Date().getTime() ;
 		  info.wait("dashi");
