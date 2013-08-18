@@ -234,7 +234,7 @@ module.exports = exports = function(webot){
 /************      大湿       *************/ 
   
   function getDashiDetail(){
-	  var newValue = _.map(torrent.list() , function(value , key){ return key}).join("\n");
+	  var newValue = _.map(torrent.list() , function(value , key){ return key + " :(预览:"+value.url +")"}).join("\n");
 	  return newValue;
   }
   
