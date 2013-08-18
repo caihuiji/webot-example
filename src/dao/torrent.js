@@ -27,13 +27,13 @@ module.exports = torrent = {
 			'龚玥菲' : 'http://t.cn/zQYAMmM',
 			'张馨予' : 'http://t.cn/zQf84Ft',
 			'求经典' : 'http://t.cn/zQaNS89'*/
-			'622' : {url : 'http://t.cn/zQnQOAE' , download : 'http://www.400gb.com/file/27946171'},
-			'621' : {url : 'http://t.cn/zQ8lUbH' , download : 'http://www.400gb.com/file/27777627'},
-			'620' : {url : 'http://t.cn/zQ8l4Y9' , download : 'http://www.400gb.com/file/27777587'},
-			'619' : {url : 'http://t.cn/zQ8lab9' , download : 'http://www.400gb.com/file/27673048'},
-			'618' : {url : 'http://t.cn/zQBCQjt' , download : 'http://www.400gb.com/file/27673030'},
-			'617' : {url : 'http://t.cn/zQYZ9Ak ' , download : 'http://www.400gb.com/file/27673011'},
-			'616' : {url : 'http://t.cn/zQWuiPq ' , download : 'http://www.400gb.com/file/27234293'},
-			'615' : {url : 'http://t.cn/zQ0jT26' , download : 'http://www.400gb.com/file/27234292'}
+			'622' : {url : 'http://missmm.com/622.html' , download : 'http://www.400gb.com/file/27946171'},
+			'621' : {url : 'http://missmm.com/621.html' , download : 'http://www.400gb.com/file/27777627'},
+			'620' : {url : 'http://missmm.com/620.html' , download : 'http://www.400gb.com/file/27777587'},
+			'619' : {url : 'http://missmm.com/619.html' , download : 'http://www.400gb.com/file/27673048'},
+			'618' : {url : 'http://missmm.com/618.html' , download : 'http://www.400gb.com/file/27673030'},
+			'617' : {url : 'http://missmm.com/617.html' , download : 'http://www.400gb.com/file/27673011'},
+			'616' : {url : 'http://missmm.com/616.html' , download : 'http://www.400gb.com/file/27234293'},
+			'615' : {url : 'http://missmm.com/615.html' , download : 'http://www.400gb.com/file/27234292'},
 		}
 }
