@@ -263,7 +263,7 @@ module.exports = exports = function(webot){
 	  var data = torrent.findByName(info.text) ;
 	  // 搜索列表
 	  if(data){
-		  message =  '(<a href="'+data.url +'">预览</a>)' ;
+		  message =  '(<a href="' + data.url + '">预览</a>)' ;
 		  log.info(info.uid +" answer in dashi = " + info.text );
 	  } else if (/求经典/gi.test(info.text)){
 		  message = '(各种经典截图的种子)  http://t.cn/zQaNS89';
